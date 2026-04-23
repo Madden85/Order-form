@@ -4,57 +4,220 @@ const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxdkQpoguov3ZGCzwmURh_ECMJfEpSDj0ci-q9nV_F75Z_VECsJVgpnscQflfIteNzR_w/exec";
+/* 🔥 API BACKEND (SECURE) */
+const API_URL = "https://script.google.com/macros/s/AKfycbwlMAT73jeOpJOOxIq6sljN927-amrf0R3QTX7OjHdR0ElYVVm_G5P31HSc2lp9eOBv/exec";
 
-const BOT_TOKEN = "8731623582:AAE_IaGXrywbwfAi91ehZEVnMgohLdpr2Ms";
-const CHAT_ID = "310295809";
+product.onchange = renderForm;
 
-function sendTele(text){
-fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({chat_id:CHAT_ID,text:text})
-});
+function input(id,placeholder){
+return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-product.onchange = ()=>{
-form.innerHTML = `
-<input id="tg" placeholder="Username">
-<input id="email" placeholder="Email">
-<input id="exp" placeholder="Expiry">
-<input id="phone" placeholder="Phone">
-`;
-};
+function renderForm(){
+let p = product.value.toLowerCase();
 
-submitBtn.onclick = ()=>{
+if(!p){
+form.innerHTML="";
+return;
+}
+
+let common = `
+${input("tg","Username Telegram")}
+${input("exp","Expired Date")}
+${input("email","Email Address")}
+`;
+
+if(p.includes("netflix")){
+form.innerHTML = common + `
+${input("pass","Password")}
+${input("profile","Nama Profile")}
+${input("pin","Pincode")}
+<textarea readonly>
+⚠️ JANGAN UBAH apa2 setting
+⚠️ JANGAN KACAU profile lain
+1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHAKTIF & TIADA REFUND ❗️Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara RANDOM bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
+</textarea>`;
+}
+
+else if(p.includes("own")){
+form.innerHTML = common;
+}
+
+else if(p.includes("seller")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+Hanya 1 device shj dibenarkan🚫
+
+🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
+
+🔷Selepas log in, tak boleh tukar password
+</textarea>`;
+}
+
+else if(p.includes("sooka")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 DEVICE, Access akan dinyahaktifkan & tiada refund
+</textarea>`;
+}
+
+else if(p.includes("spotify")){
+form.innerHTML = common + `
+${input("link","Link Invitation")}
+<textarea readonly>
+Note
+1)Tekan link yang diberi dan tekan TERIMA JEMPUTAN
+
+2)DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
+
+3)Sahkan alamat anda - Lebuh Nipah 1
+
+4)Siap — biarkan muzik bermula.
+
+ Lepas dah boleh join family, sila inform admin semula
+
+ Hanya 1 DEVICE SAHAJA untuk 1 langganan
+</textarea>`;
+}
+
+else if(p.includes("iqiyi")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+</textarea>`;
+}
+
+else if(p.includes("disney")){
+form.innerHTML = common + `
+${input("profile","Nama Profile")}
+${input("phone","Phone Number")}
+<textarea readonly>
+Note
+1)Buka app Disney+ Hotstar
+
+2)Masukkan no phone
+
+3)Masukkan code yang admin akan bagi
+
+4)Siap
+
+Hanya 1 DEVICE SAHAJA untuk 1 langganan
+
+JANGAN GANGGU PROFILE ORANG LAIN
+</textarea>`;
+}
+
+else if(p.includes("viu")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+</textarea>`;
+}
+}
+
+submitBtn.onclick = generate;
+
+function generate(){
+
+let p = product.value;
+if(!p) return alert("Pilih produk");
+
 let order = Math.floor(10000 + Math.random()*90000);
 
 let data = {
 order: order,
-product: product.value,
-username: document.getElementById("tg").value,
-email: document.getElementById("email").value,
-exp: document.getElementById("exp").value,
-phone: document.getElementById("phone").value
+product: p,
+username: val("tg"),
+email: val("email"),
+exp: val("exp"),
+phone: val("phone"),
+pass: val("pass"),
+profile: val("profile"),
+pin: val("pin"),
+link: val("link")
 };
 
-let text = `ORDER: ${data.order}
-Product: ${data.product}
+let text = `${p.toUpperCase()}
+
+ORDER NUMBER: ${order}
+
+Expiry: ${data.exp}
 Username: ${data.username}
 Email: ${data.email}
-Expiry: ${data.exp}
-Phone: ${data.phone}`;
+`;
 
+if(data.pass) text+=`Password: ${data.pass}\n`;
+if(data.profile) text+=`Profile name: ${data.profile}\n`;
+if(data.pin) text+=`Pincode: ${data.pin}\n`;
+if(data.phone) text+=`Phone: ${data.phone}\n`;
+if(data.link) text+=`Link: ${data.link}\n`;
+
+let note = document.querySelector("textarea")?.value || "";
+text += "\n\n" + note;
+
+text += `
+
+-------------------------------------
+
+GENERATE CODE atau VERIFY EMAIL anda sendiri disini
+
+❗PENTING❗ Sila gunakan order number yang diberikan di atas 👆 
+
+https://numoverifycode.netlify.app/
+`;
+
+/* OUTPUT */
 result.classList.remove("hidden");
 result.innerText = text;
 
-fetch(API_URL,{method:"POST",body: JSON.stringify(data)});
-
-sendTele(text);
-
+/* COPY */
 navigator.clipboard.writeText(text);
 
-alert("SUCCESS");
+/* 🔥 SEND TO BACKEND */
+fetch(API_URL,{
+method:"POST",
+body: JSON.stringify(data)
+});
+
+alert("Order generated + sent! ✅");
 
 copyBtn.classList.remove("hidden");
+
+copyBtn.onclick = ()=>{
+navigator.clipboard.writeText(text);
+alert("Copied!");
 };
+}
+
+function val(id){
+let el=document.getElementById(id);
+return el?el.value:"";
+}
