@@ -1,668 +1,106 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NUMO VENTURES</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Order</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg-dark: #04101f;
-      --bg-darker: #020814;
-      --glass: rgba(8, 22, 40, 0.58);
-      --glass-strong: rgba(8, 22, 40, 0.78);
-      --border: rgba(112, 220, 255, 0.18);
-      --text: #eef8ff;
-      --muted: #b9d7ea;
-      --soft: #8eb7cc;
-      --cyan: #4ce3ff;
-      --cyan-2: #11b8ff;
-      --blue: #297dff;
-      --gold: #ffd76a;
-      --green: #6dffb0;
-      --pink: #ff74c8;
-      --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-      --shadow-glow: 0 0 30px rgba(76, 227, 255, 0.18);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      color: var(--text);
-      background:
-        linear-gradient(rgba(2, 8, 20, 0.75), rgba(2, 8, 20, 0.9)),
-        url("bg-premium.jpg") center center / cover no-repeat fixed;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(76, 227, 255, 0.16), transparent 30%),
-        radial-gradient(circle at top right, rgba(41, 125, 255, 0.12), transparent 28%),
-        radial-gradient(circle at bottom center, rgba(17, 184, 255, 0.08), transparent 35%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-    }
-
-    .hero {
-      width: min(1120px, 92%);
-      margin: 0 auto;
-      padding: 32px 0 18px;
-    }
-
-    .hero-card {
-      background: rgba(3, 15, 30, 0.58);
-      border: 1px solid rgba(76, 227, 255, 0.16);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-radius: 28px;
-      box-shadow: var(--shadow), var(--shadow-glow);
-      padding: 26px 20px 22px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(76, 227, 255, 0.06), transparent 35%, rgba(255, 255, 255, 0.02));
-      pointer-events: none;
-    }
-
-    .hero-top {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-    }
-
-    .logo-wrap {
-      width: 112px;
-      height: 112px;
-      border-radius: 26px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.35);
-      overflow: hidden;
-    }
-
-    .logo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(76, 227, 255, 0.08);
-      border: 1px solid rgba(76, 227, 255, 0.16);
-      color: #c8f6ff;
-      font-size: 12px;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .site-title {
-      font-size: clamp(28px, 6vw, 52px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 18px rgba(76, 227, 255, 0.22);
-      background: linear-gradient(90deg, #ffffff, #9cefff 45%, #ffd76a);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .tagline {
-      font-family: 'Caveat', cursive;
-      font-size: clamp(35px, 5vw, 40px);
-      color: #74FFB7;
-      text-shadow: 0 0 18px rgba(76, 227, 255, 0.22);
-    }
-
-    .hero-desc {
-      max-width: 760px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-      margin-top: 6px;
-    }
-
-    .guarantee {
-  margin-top: 18px;
-  display: block;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  background: linear-gradient(90deg, #ffd76a, #fff2b7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 12px rgba(255, 215, 106, 0.35);
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0d0d0d;
+color:#fff;
+text-align:center;
 }
 
-    .hero-points {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 24px;
-    }
-
-    .hero-point {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 16px;
-      text-align: center;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .hero-point strong {
-      display: block;
-      font-size: 15px;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }
-
-    .hero-point span {
-      font-size: 13px;
-      color: var(--soft);
-      line-height: 1.6;
-    }
-
-    .section-wrap {
-      width: min(1120px, 92%);
-      margin: 18px auto 28px;
-    }
-
-    .section-title {
-      font-size: clamp(22px, 4vw, 34px);
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: #f4fbff;
-    }
-
-    .section-subtitle {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-      margin-bottom: 22px;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .product-card {
-      position: relative;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 20px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: var(--shadow), var(--shadow-glow);
-      overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }
-
-    .product-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(76, 227, 255, 0.32);
-      box-shadow: 0 22px 40px rgba(0,0,0,0.45), 0 0 34px rgba(76, 227, 255, 0.14);
-    }
-
-    .product-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(145deg, rgba(255,255,255,0.06), transparent 45%);
-      pointer-events: none;
-    }
-
-    .product-head {
-      display: flex;
-      align-items: start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .product-title {
-      font-size: 22px;
-      font-weight: 800;
-      line-height: 1.2;
-      color: #ffffff;
-    }
-
-    .product-badge {
-      flex-shrink: 0;
-      font-size: 11px;
-      font-weight: 700;
-      color: #03111f;
-      background: linear-gradient(135deg, var(--gold), #fff2b7);
-      padding: 7px 11px;
-      border-radius: 999px;
-      box-shadow: 0 6px 16px rgba(255, 215, 106, 0.25);
-    }
-
-    .features {
-      list-style: none;
-      display: grid;
-      gap: 9px;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .features li {
-      color: #dff5ff;
-      font-size: 13.5px;
-      line-height: 1.6;
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .features li::before {
-      content: "✦";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--cyan);
-      font-size: 12px;
-    }
-
-    .sub-block {
-      margin-bottom: 16px;
-      padding: 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      position: relative;
-      z-index: 1;
-    }
-
-    .sub-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 10px;
-    }
-
-    .plans {
-      display: grid;
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .plan {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(3, 13, 24, 0.55);
-      border: 1px solid rgba(76, 227, 255, 0.12);
-    }
-
-    .plan-text {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .plan-duration {
-      font-size: 14px;
-      font-weight: 700;
-      color: #f6fcff;
-    }
-
-    .plan-note {
-      font-size: 12px;
-      color: #88acc0;
-    }
-
-    .price {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--green);
-      text-shadow: 0 0 14px rgba(109, 255, 176, 0.15);
-    }
-
-    .btn-order {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-width: 110px;
-      padding: 11px 14px;
-      border-radius: 14px;
-      text-decoration: none;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--cyan-2), var(--blue));
-      box-shadow: 0 10px 22px rgba(41, 125, 255, 0.28);
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .btn-order:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 14px 28px rgba(41, 125, 255, 0.35);
-      filter: brightness(1.05);
-    }
-
-    .btn-disabled {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 110px;
-      padding: 11px 14px;
-      border-radius: 14px;
-      color: #8ca7b8;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .testimoni-section {
-      margin-top: 24px;
-    }
-
-    .testimoni-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-    }
-
-    .testimoni-card {
-      background: rgba(6, 18, 34, 0.62);
-      border: 1px solid rgba(76, 227, 255, 0.14);
-      border-radius: 20px;
-      overflow: hidden;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 12px 26px rgba(0,0,0,0.35);
-      transition: transform 0.25s ease;
-    }
-
-    .testimoni-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .testimoni-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: contain;
-      padding: 5px;
-      display: block;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .testimoni-card p {
-      font-size: 13px;
-      color: #d9f2ff;
-      font-weight: 600;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .footer-box {
-      width: min(1120px, 92%);
-      margin: 0 auto 30px;
-      background: rgba(4, 15, 30, 0.66);
-      border: 1px solid rgba(76, 227, 255, 0.14);
-      border-radius: 24px;
-      padding: 20px;
-      text-align: center;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-    }
-
-    .footer-box h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
-      color: #ffffff;
-    }
-
-    .footer-box p {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .footer-action {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 13px 18px;
-      border-radius: 14px;
-      text-decoration: none;
-      color: #04101f;
-      font-weight: 800;
-      background: linear-gradient(135deg, #ffd76a, #fff2b7);
-      box-shadow: 0 12px 26px rgba(255, 215, 106, 0.24);
-    }
-
-    @media (max-width: 980px) {
-      .products-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .testimoni-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 680px) {
-      .hero {
-        width: 94%;
-        padding-top: 20px;
-      }
-
-      .hero-card {
-        border-radius: 22px;
-        padding: 20px 14px 18px;
-      }
-
-      .hero-points {
-        grid-template-columns: 1fr;
-      }
-
-      .section-wrap,
-      .footer-box {
-        width: 94%;
-      }
-
-      .product-card {
-        padding: 16px;
-        border-radius: 20px;
-      }
-
-      .product-head {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .plan {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .btn-order,
-      .btn-disabled {
-        width: 100%;
-      }
-
-      .testimoni-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  
-.plan-option {
-  display:flex;
-  justify-content:space-between;
-  padding:10px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.05);
-  cursor:pointer;
+.wrap{
+width:92%;
+max-width:480px;
+margin:auto;
+padding:20px 0;
 }
 
-.plan-option.active {
-  border:1px solid #4ce3ff;
-  background:rgba(76,227,255,0.15);
+.card{
+background:#161616;
+padding:18px;
+border-radius:14px;
+margin-bottom:15px;
 }
 
-/* SINCE 2015 lines */
-.since-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-}
-.since-line span {
-  color: #ffd76a;
-  font-size: 13px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  position: relative;
-  padding: 0 12px;
-}
-.since-line span::before,
-.since-line span::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 80px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #ffd76a);
-}
-.since-line span::before {
-  right: 100%;
-}
-.since-line span::after {
-  left: 100%;
-  background: linear-gradient(to left, transparent, #ffd76a);
+input,select,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:none;
+background:#222;
+color:#fff;
 }
 
+textarea{
+height:150px;
+white-space:pre-line;
+}
+
+.btn{
+width:100%;
+padding:13px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-primary{background:#e50914;color:#fff;}
+.btn-green{background:#0f9d58;color:#fff;}
+
+.output{
+white-space:pre-line;
+text-align:left;
+background:#000;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+}
+
+.hidden{display:none;}
 </style>
-
 </head>
+
 <body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero-card">
-        <div class="hero-top">
-          <div class="logo-wrap">
-            <img src="Numologo.jpg" alt="NUMO VENTURES" class="logo">
-          </div>
 
-<div class="since-line"><span>SINCE 2015</span></div>
+<div class="wrap">
 
-          <div class="eyebrow">Premium Accounts • Trusted Seller</div>
-          <h1 class="site-title">AKAUN PREMIUM MURAH</h1>
-          <p class="tagline">kami janji tak sidai  🤙 </p>
-          <p class="hero-desc">
-✔️ Pilih pakej langganan yang awak nak dan tekan order<br><br>
-✔️ Semua akaun premium kami 100% legit dan tidak menyalahi undang2<br><br>
-✔️ <span style="color:#6dffb0;font-weight:700;">FULL WARRANTY!</span> Jika ada sebarang masalah, boleh hubungi admin. Admin akan fix masalah atau ganti akaun baru
-          <br><br>✔️ Trusted seller sejak 2015<br><br>✔️ Fast response & support aktif</p>
+<h2>CREATE ORDER</h2>
 
-          <div class="guarantee">Gerenti tak menyesal!</div>
-        </div>
+<div class="card">
 
-        <div class="hero-points">
-          <div class="hero-point">
-            <strong>Cara Order Mudah</strong>
-            <span>Pilih pakej langganan dan terus tekan button dapatkan akaun untuk membuat tempahan</span>
-          </div>
-          <div class="hero-point">
-            <strong>Akaun 100% legit dan selamat</strong>
-            <span>Semua akaun premium, verified dan trusted. Akaun kami bukan akaun recycle atau fake</span>
-          </div>
-          <div class="hero-point">
-            <strong>WARRANTY sepenuhnya</strong>
-            <span>kami beri warranty penuh! Jika langgan 12 bulan, warranty akan cover selama 12 bulan</span>
-          </div>
-        </div>
-      </div>
-    </header>
+<select id="product">
+<option value="">Pilih Produk</option>
+<option>Netflix premium private profile</option>
+<option>Youtube Premium Own email</option>
+<option>Youtube premium seller email</option>
+<option>Sooka premium</option>
+<option>Spotify premium</option>
+<option>iqiyi premium</option>
+<option>disney+ hotstar</option>
+<option>viu premium</option>
+</select>
 
-    <main class="section-wrap">
-      <h2 class="section-title">Senarai Produk</h2>
-      <p class="section-subtitle">
-        Semua senarai produk premium kami ada di bawah. Boleh pilih langganan yang anda mahukan
-      </p>
+<div id="form"></div>
 
-      <div id="products" class="products-grid"></div>
+<button class="btn btn-primary" id="submitBtn">SUBMIT</button>
 
-      <section class="testimoni-section">
-        <h2 class="section-title">Testimoni Pelanggan</h2>
-        <p class="section-subtitle">
-          Bukti semua pelanggan kami amat berpuashati dan ada yang dah repeat order. Kami amat mementingkan kepuasan pelanggan
-        </p>
-        <div id="testimoni" class="testimoni-grid"></div>
-      </section>
-    </main>
+<div id="result" class="output hidden"></div>
 
-    <section class="footer-box">
-      <h3>Dah ready nak dapatkan akaun?</h3>
-      <p>
-        Tekan button dapatkan akaun di bawah, anda akan dibawa terus ke telegram admin
-      </p>
-      <a class="footer-action" href="https://t.me/ownernumoventures?text=Hi nak order">Dapatkan akaun Sekarang</a>
-    </section>
-<div style="text-align:center;color:#b9d7ea;font-size:13px;margin:10px 0 20px;">NuMoVentures - Since 2015</div>
-  </div>
+<button id="copyBtn" class="btn btn-green hidden">COPY</button>
 
-  <script src="app.js"></script>
+</div>
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>

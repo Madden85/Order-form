@@ -1,202 +1,214 @@
-const telegramUsername = "ownernumoventures";
+const form = document.getElementById("form");
+const result = document.getElementById("result");
+const copyBtn = document.getElementById("copyBtn");
+const product = document.getElementById("product");
+const submitBtn = document.getElementById("submitBtn");
 
-const products = [
-  {
-    name: "NETFLIX PREMIUM",
-    badge: "Best Seller",
-    features: [
-      "Dapat 1 private profile (boleh set nama sendiri)",
-      "Profile boleh letak pincode sendiri (orang lain tak boleh access)",
-      "Tiada masalah screen limit sebab 1 profile 1 user je yang guna"
-    ],
-    plans: [
-      { duration: "1 Bulan", price: "RM25", orderText: "Netflix 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM45", orderText: "Netflix 2 bulan", order: true },
-      { duration: "3 Bulan Promo", price: "RM60", note: "Promo", orderText: "Netflix 3 bulan", order: true },
-      { duration: "6 Bulan", price: "RM120", order: false },
-      { duration: "12 Bulan", price: "RM230", order: false }
-    ]
-  },
-  {
-    name: "YOUTUBE PREMIUM",
-    badge: "Hot Deal",
-    sections: [
-      {
-        title: "Email Sendiri",
-        features: [
-          "Boleh guna email sendiri",
-          "Family invitation"
-        ],
-        plans: [
-          { duration: "1 Bulan", price: "RM16", orderText: "YT Sendiri 1 bulan", order: true },
-          { duration: "3 Bulan", price: "RM45", orderText: "YT Sendiri 3 bulan", order: true },
-          { duration: "6 Bulan", price: "RM85", order: false },
-          { duration: "12 Bulan", price: "RM144", order: false }
-        ]
-      },
-      {
-        title: "Email Seller",
-        features: [
-          "Guna email dari seller",
-          "Dapat email dan password, terus boleh sign in"
-        ],
-        plans: [
-          { duration: "1 Bulan", price: "RM10", orderText: "YT Seller 1 bulan", order: true },
-          { duration: "3 Bulan", price: "RM27", orderText: "YT Seller 3 bulan", order: true },
-          { duration: "6 Bulan", price: "RM48", order: false },
-          { duration: "12 Bulan", price: "RM84", order: false }
-        ]
-      }
-    ]
-  },
-  {
-    name: "DISNEY+ HOTSTAR",
-    badge: "Premium",
-    plans: [
-      { duration: "1 Bulan", price: "RM25", orderText: "Disney 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM45", orderText: "Disney 2 bulan", order: true },
-      { duration: "Promo 3 Bulan", price: "RM60", orderText: "Disney 3 bulan", order: true },
-      { duration: "6 Bulan", price: "RM120", order: false },
-      { duration: "12 Bulan", price: "RM230", order: false }
-    ]
-  },
-  {
-    name: "SOOKA PREMIUM",
-    badge: "Exclusive",
-    plans: [
-      { duration: "1 Bulan", price: "RM25", orderText: "Sooka 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM46", orderText: "Sooka 2 bulan", order: true },
-      { duration: "6 Bulan", price: "RM120", order: false },
-      { duration: "12 Bulan", price: "RM216", order: false }
-    ]
-  },
-  {
-    name: "VIU PREMIUM",
-    badge: "Value",
-    plans: [
-      { duration: "1 Bulan", price: "RM15", orderText: "Viu 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM26", orderText: "Viu 2 bulan", order: true },
-      { duration: "6 Bulan", price: "RM66", order: false },
-      { duration: "12 Bulan", price: "RM120", order: false }
-    ]
-  },
-  {
-    name: "iQIYI PREMIUM",
-    badge: "Popular",
-    plans: [
-      { duration: "1 Bulan", price: "RM15", orderText: "IQIYI 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM26", orderText: "IQIYI 2 bulan", order: true },
-      { duration: "Promo 3 Bulan", price: "RM33", orderText: "IQIYI 3 bulan", order: true },
-      { duration: "6 Bulan", price: "RM66", order: false },
-      { duration: "12 Bulan", price: "RM120", order: false }
-    ]
-  },
-  {
-    name: "SPOTIFY PREMIUM",
-    badge: "Music Deal",
-    features: [
-      "Tiada iklan",
-      "Skip tanpa had",
-      "Offline mode",
-      "Audio high quality"
-    ],
-    plans: [
-      { duration: "1 Bulan", price: "RM15", orderText: "Spotify 1 bulan", order: true },
-      { duration: "2 Bulan", price: "RM28", orderText: "Spotify 2 bulan", order: true },
-      { duration: "Promo 2 Bulan", price: "RM25", note: "Promo", orderText: "Spotify promo", order: true },
-      { duration: "6 Bulan", price: "RM72", order: false },
-      { duration: "12 Bulan", price: "RM120", order: false }
-    ]
-  }
-];
+product.onchange = renderForm;
 
-const testimonies = Array.from({ length: 10 }, (_, i) => ({
-  title: `Testimoni ${i + 1}`,
-  image: `testimoni${i + 1}.jpg`
-}));
-
-function createTelegramLink(text) {
-  return `https://t.me/${telegramUsername}?text=${encodeURIComponent(text)}`;
+function input(id,placeholder){
+return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-function renderFeatures(features = []) {
-  if (!features.length) return "";
-  return `
-    <ul class="features">
-      ${features.map(item => `<li>${item}</li>`).join("")}
-    </ul>
-  `;
+function renderForm(){
+let p = product.value.toLowerCase();
+
+if(!p){
+form.innerHTML="";
+return;
 }
 
+let common = `
+${input("tg","Username Telegram")}
+${input("exp","Expired Date")}
+${input("email","Email Address")}
+`;
 
-function renderPlans(plans = [], productName = "") {
-  return `
-    <div class="plans">
-      ${plans.map(plan => `
-        <div class="plan-option" onclick="selectPlan(this, '${productName}', '${plan.duration}')">
-          <span>${plan.duration}</span>
-          <span>${plan.price}</span>
-        </div>
-      `).join("")}
-      <div class="plan-action"></div>
-    </div>
-  `;
-}
-function renderSections(sections = []) {
-  return sections.map(section => `
-    <div class="sub-block">
-      <div class="sub-title">${section.title}</div>
-      ${renderFeatures(section.features)}
-      ${renderPlans(section.plans)}
-    </div>
-  `).join("");
+if(p.includes("netflix")){
+form.innerHTML = common + `
+${input("pass","Password")}
+${input("profile","Nama Profile")}
+${input("pin","Pincode")}
+<textarea readonly>
+⚠️ JANGAN UBAH apa2 setting
+⚠️ JANGAN KACAU profile lain
+1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHAKTIF & TIADA REFUND ❗️Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara RANDOM bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
+</textarea>`;
 }
 
-function renderProducts() {
-  const container = document.getElementById("products");
-
-  container.innerHTML = products.map(product => `
-    <article class="product-card">
-      <div class="product-head">
-        <h3 class="product-title">${product.name}</h3>
-        <span class="product-badge">${product.badge || "Premium"}</span>
-      </div>
-
-      ${product.features ? renderFeatures(product.features) : ""}
-      ${product.sections ? renderSections(product.sections) : ""}
-      ${product.plans ? renderPlans(product.plans, product.name) : ""}
-    </article>
-  `).join("");
+else if(p.includes("own")){
+form.innerHTML = common;
 }
 
-function renderTestimonies() {
-  const container = document.getElementById("testimoni");
+else if(p.includes("seller")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+Hanya 1 device shj dibenarkan🚫
 
-  container.innerHTML = testimonies.map(item => `
-    <div class="testimoni-card">
-      <img src="${item.image}" alt="${item.title}">
-      <p>${item.title}</p>
-    </div>
-  `).join("");
+🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
+
+🔷Selepas log in, tak boleh tukar password
+</textarea>`;
 }
 
+else if(p.includes("sooka")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
 
-function selectPlan(el, productName, duration) {
-  const parent = el.parentElement;
+❌Boleh log in 1 device sahaja
 
-  parent.querySelectorAll('.plan-option').forEach(e => e.classList.remove('active'));
-  el.classList.add('active');
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
-  const actionDiv = parent.querySelector('.plan-action');
-
-  const text = `${productName} ${duration}`;
-  const link = `https://t.me/ownernumoventures?text=${encodeURIComponent(text)}`;
-
-  actionDiv.innerHTML = `<a class="btn-order" href="${link}" target="_blank" rel="noopener noreferrer">Dapatkan Akaun</a>`;
+p/s-Jika didapati buka lebih dari 1 DEVICE, Access akan dinyahaktifkan & tiada refund
+</textarea>`;
 }
 
+else if(p.includes("spotify")){
+form.innerHTML = common + `
+${input("link","Link Invitation")}
+<textarea readonly>
+Note
+1)Tekan link yang diberi dan tekan TERIMA JEMPUTAN
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderProducts();
-  renderTestimonies();
+2)DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
+
+3)Sahkan alamat anda - Lebuh Nipah 1
+
+4)Siap — biarkan muzik bermula.
+
+ Lepas dah boleh join family, sila inform admin semula
+
+ Hanya 1 DEVICE SAHAJA untuk 1 langganan
+</textarea>`;
+}
+
+else if(p.includes("iqiyi")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+</textarea>`;
+}
+
+else if(p.includes("disney")){
+form.innerHTML = common + `
+${input("profile","Nama Profile")}
+${input("phone","Phone Number")}
+<textarea readonly>
+Note
+1)Buka app Disney+ Hotstar
+
+2)Masukkan no phone
+
+3)Masukkan code yang admin akan bagi
+
+4)Siap
+
+Hanya 1 DEVICE SAHAJA untuk 1 langganan
+
+JANGAN GANGGU PROFILE ORANG LAIN
+</textarea>`;
+}
+
+else if(p.includes("viu")){
+form.innerHTML = common + `
+${input("pass","Password")}
+<textarea readonly>
+Note
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+</textarea>`;
+}
+}
+
+submitBtn.onclick = generate;
+
+function generate(){
+
+let p = product.value;
+if(!p) return alert("Pilih produk");
+
+let order = Math.floor(10000 + Math.random()*90000);
+
+let text = `${p.toUpperCase()}
+
+ORDER NUMBER: ${order}
+
+Expiry: ${val("exp")}
+Username: ${val("tg")}
+Email: ${val("email")}
+`;
+
+if(val("pass")) text+=`Password: ${val("pass")}\n`;
+if(val("profile")) text+=`Profile name: ${val("profile")}\n`;
+if(val("pin")) text+=`Pincode: ${val("pin")}\n`;
+if(val("phone")) text+=`Phone: ${val("phone")}\n`;
+if(val("link")) text+=`Link: ${val("link")}\n`;
+
+let note = document.querySelector("textarea")?.value || "";
+text += "\n\n" + note;
+
+text += `
+
+-------------------------------------
+
+GENERATE CODE atau VERIFY EMAIL anda sendiri disini
+
+❗PENTING❗ Sila gunakan order number yang diberikan di atas 👆 
+
+https://numoverifycode.netlify.app/
+`;
+
+/* OUTPUT */
+result.classList.remove("hidden");
+result.innerText = text;
+
+/* AUTO COPY */
+navigator.clipboard.writeText(text);
+
+/* 🔥 AUTO SEND TELEGRAM */
+fetch("https://script.google.com/macros/s/AKfycbw0Thzsxoigaf-pzi7RpSYUZRAPUSmdVrGBuzGIvT1o9AIPyJ9lRmc7pTKkXJWYTznF/exec",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+order:order,
+product:p,
+username:val("tg"),
+email:val("email"),
+exp:val("exp")
+})
 });
+
+alert("Order generated + sent to Telegram!");
+
+copyBtn.classList.remove("hidden");
+
+copyBtn.onclick = ()=>{
+navigator.clipboard.writeText(text);
+alert("Copied!");
+};
+}
+
+function val(id){
+let el=document.getElementById(id);
+return el?el.value:"";
+}
