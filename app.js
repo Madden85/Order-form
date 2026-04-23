@@ -4,21 +4,6 @@ const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-/* 🔥 TELEGRAM SETUP */
-const BOT_TOKEN = "8731623582:AAFE9WBUyeYg4VxQfgXPMpW7j6atjA5F-Bg";
-const CHAT_ID = "310295809";
-
-function sendTele(text){
-fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-chat_id:CHAT_ID,
-text:text
-})
-});
-}
-
 product.onchange = renderForm;
 
 function input(id,placeholder){
@@ -201,7 +186,7 @@ result.innerText = text;
 navigator.clipboard.writeText(text);
 
 /* 🔥 AUTO SEND TELEGRAM */
-fetch("https://script.google.com/macros/s/AKfycbxV04D2DiCk98UBOPAD1oNBgjm8gvqZ2ChVzWVEy2imAWiwoIbwl2dUeOCa17MoIXiH/exec",{
+fetch("https://script.google.com/macros/s/AKfycbyRGzkQ-2BF2e_MvstkoBwnBmVt75rJ1EjBW2rKERzBvZYWTHIA0ZpwNhl2Rrou_7mq/exec",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
