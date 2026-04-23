@@ -1,80 +1,60 @@
-
 const form = document.getElementById("form");
 const result = document.getElementById("result");
 const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-product.onchange = renderForm;
+const API_URL = "https://script.google.com/macros/s/AKfycbxdkQpoguov3ZGCzwmURh_ECMJfEpSDj0ci-q9nV_F75Z_VECsJVgpnscQflfIteNzR_w/exec";
 
-function input(id,placeholder){
-return `<input id="${id}" placeholder="${placeholder}">`;
+const BOT_TOKEN = "8731623582:AAE_IaGXrywbwfAi91ehZEVnMgohLdpr2Ms";
+const CHAT_ID = "310295809";
+
+function sendTele(text){
+fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({chat_id:CHAT_ID,text:text})
+});
 }
 
-function renderForm(){
-let p = product.value.toLowerCase();
-
-if(!p){
-form.innerHTML="";
-return;
-}
-
-let common = `
-${input("tg","Username Telegram")}
-${input("exp","Expired Date")}
-${input("email","Email Address")}
+product.onchange = ()=>{
+form.innerHTML = `
+<input id="tg" placeholder="Username">
+<input id="email" placeholder="Email">
+<input id="exp" placeholder="Expiry">
+<input id="phone" placeholder="Phone">
 `;
+};
 
-form.innerHTML = common;
-}
-
-submitBtn.onclick = generate;
-
-function generate(){
-
-let p = product.value;
-if(!p) return alert("Pilih produk");
-
+submitBtn.onclick = ()=>{
 let order = Math.floor(10000 + Math.random()*90000);
 
-let text = `${p.toUpperCase()}
+let data = {
+order: order,
+product: product.value,
+username: document.getElementById("tg").value,
+email: document.getElementById("email").value,
+exp: document.getElementById("exp").value,
+phone: document.getElementById("phone").value
+};
 
-ORDER NUMBER: ${order}
-
-Expiry: ${val("exp")}
-Username: ${val("tg")}
-Email: ${val("email")}
-`;
+let text = `ORDER: ${data.order}
+Product: ${data.product}
+Username: ${data.username}
+Email: ${data.email}
+Expiry: ${data.exp}
+Phone: ${data.phone}`;
 
 result.classList.remove("hidden");
 result.innerText = text;
 
+fetch(API_URL,{method:"POST",body: JSON.stringify(data)});
+
+sendTele(text);
+
 navigator.clipboard.writeText(text);
 
-// 🔥 SEND TO APPS SCRIPT (FINAL)
-fetch("https://script.google.com/macros/s/AKfycbxl2WYo8PensBMtJeQbBjlRSI0BzVG-4uTzRWLmy8cxSot55zIz8EGmzRtg74Kyen7K/exec",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-order:order,
-product:p,
-username:val("tg"),
-email:val("email"),
-exp:val("exp")
-})
-});
-
-alert("Order generated + sent!");
+alert("SUCCESS");
 
 copyBtn.classList.remove("hidden");
-
-copyBtn.onclick = ()=>{
-navigator.clipboard.writeText(text);
-alert("Copied!");
 };
-}
-
-function val(id){
-let el=document.getElementById(id);
-return el?el.value:"";
-}
