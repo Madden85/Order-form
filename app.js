@@ -1,12 +1,9 @@
+
 const form = document.getElementById("form");
 const result = document.getElementById("result");
 const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
-
-/* 🔥 TELEGRAM SETUP */
-const BOT_TOKEN = "REMOVED";
-const CHAT_ID = "310295809";
 
 product.onchange = renderForm;
 
@@ -49,15 +46,13 @@ Username: ${val("tg")}
 Email: ${val("email")}
 `;
 
-/* OUTPUT */
 result.classList.remove("hidden");
 result.innerText = text;
 
-/* AUTO COPY */
 navigator.clipboard.writeText(text);
 
-/* 🔥 SEND TO APPS SCRIPT */
-fetch("https://script.google.com/macros/s/AKfycbyRGzkQ-2BF2e_MvstkoBwnBmVt75rJ1EjBW2rKERzBvZYWTHIA0ZpwNhl2Rrou_7mq/exec",{
+// 🔥 SEND TO APPS SCRIPT (FINAL)
+fetch("https://script.google.com/macros/s/AKfycbxl2WYo8PensBMtJeQbBjlRSI0BzVG-4uTzRWLmy8cxSot55zIz8EGmzRtg74Kyen7K/exec",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
