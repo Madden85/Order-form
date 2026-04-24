@@ -5,7 +5,7 @@ const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
 /* API BACKEND */
-const API_URL = "https://script.google.com/macros/s/AKfycbz8TmL8FBOPTlyQKmbe2JgDODPoqq1q7GaMhAF0vY6XuuyMxC8yEo8oRhCfrR6TnT0k/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw4G545kakVNZpw1vssHzR62EAeZHUZtcwk5h05A8LwcVHC2Z_BXfTpQ0PEAht40sx1/exec";
 
 product.onchange = renderForm;
 
