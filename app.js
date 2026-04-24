@@ -4,7 +4,7 @@ const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-/* 🔥 API BACKEND (SECURE) */
+/* API BACKEND */
 const API_URL = "https://script.google.com/macros/s/AKfycbwlMAT73jeOpJOOxIq6sljN927-amrf0R3QTX7OjHdR0ElYVVm_G5P31HSc2lp9eOBv/exec";
 
 product.onchange = renderForm;
@@ -61,6 +61,7 @@ Hanya 1 device shj dibenarkan🚫
 else if(p.includes("sooka")){
 form.innerHTML = common + `
 ${input("pass","Password")}
+${input("device","Device / Slot (TV / Tablet / Phone)")}
 <textarea readonly>
 Note
 ⚠️ Jangan ubah apa2 setting
@@ -162,7 +163,8 @@ phone: val("phone"),
 pass: val("pass"),
 profile: val("profile"),
 pin: val("pin"),
-link: val("link")
+link: val("link"),
+device: val("device")
 };
 
 let text = `${p.toUpperCase()}
@@ -179,6 +181,7 @@ if(data.profile) text+=`Profile name: ${data.profile}\n`;
 if(data.pin) text+=`Pincode: ${data.pin}\n`;
 if(data.phone) text+=`Phone: ${data.phone}\n`;
 if(data.link) text+=`Link: ${data.link}\n`;
+if(data.device) text+=`Device / Slot: ${data.device}\n`;
 
 let note = document.querySelector("textarea")?.value || "";
 text += "\n\n" + note;
@@ -201,11 +204,19 @@ result.innerText = text;
 /* COPY */
 navigator.clipboard.writeText(text);
 
-/* 🔥 SEND TO BACKEND */
+/* SEND TO BACKEND */
 fetch(API_URL,{
 method:"POST",
 body: JSON.stringify(data)
 });
+
+/* OPEN TELEGRAM CUSTOMER */
+let customerUsername = data.username;
+if(customerUsername){
+  const cleanUsername = customerUsername.replace("@","");
+  const customerLink = `https://t.me/${cleanUsername}?text=${encodeURIComponent(text)}`;
+  window.open(customerLink, "_blank");
+}
 
 alert("Order generated + sent! ✅");
 
@@ -220,4 +231,36 @@ alert("Copied!");
 function val(id){
 let el=document.getElementById(id);
 return el?el.value:"";
+}
+
+/* AUTO FILL DARI LINK */
+const urlParams = new URLSearchParams(window.location.search);
+
+window.onload = () => {
+
+  if(urlParams.get("product")){
+    product.value = urlParams.get("product");
+    product.onchange();
+  }
+
+  setTimeout(() => {
+    autoFill("tg");
+    autoFill("exp");
+    autoFill("email");
+    autoFill("pass");
+    autoFill("profile");
+    autoFill("pin");
+    autoFill("phone");
+    autoFill("link");
+    autoFill("device");
+  }, 300);
+
+};
+
+function autoFill(id){
+  const el = document.getElementById(id);
+  const value = urlParams.get(id);
+  if(el && value !== null){
+    el.value = value;
+  }
 }
