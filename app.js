@@ -4,8 +4,37 @@ const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-/* API BACKEND */
-const API_URL = "https://script.google.com/macros/s/AKfycbw4G545kakVNZpw1vssHzR62EAeZHUZtcwk5h05A8LwcVHC2Z_BXfTpQ0PEAht40sx1/exec";
+/* 🔥 API BACKEND (SECURE) */
+const API_URL = "https://script.google.com/macros/s/AKfycbwlMAT73jeOpJOOxIq6sljN927-amrf0R3QTX7OjHdR0ElYVVm_G5P31HSc2lp9eOBv/exec";
+
+/* 🔥 AUTO FILL DARI LINK BOT */
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("product")) {
+    product.value = params.get("product");
+    renderForm();
+
+    setTimeout(() => {
+      setField("tg", params.get("tg"));
+      setField("exp", params.get("exp"));
+      setField("email", params.get("email"));
+      setField("pass", params.get("pass"));
+      setField("profile", params.get("profile"));
+      setField("pin", params.get("pin"));
+      setField("phone", params.get("phone"));
+      setField("link", params.get("link"));
+      setField("device", params.get("device"));
+    }, 300);
+  }
+});
+
+function setField(id, value){
+  const el = document.getElementById(id);
+  if(el && value !== null && value !== ""){
+    el.value = value;
+  }
+}
 
 product.onchange = renderForm;
 
@@ -204,18 +233,17 @@ result.innerText = text;
 /* COPY */
 navigator.clipboard.writeText(text);
 
-/* SEND TO BACKEND */
+/* 🔥 SEND TO BACKEND */
 fetch(API_URL,{
 method:"POST",
 body: JSON.stringify(data)
 });
 
-/* OPEN TELEGRAM CUSTOMER */
-let customerUsername = data.username;
+/* 🔥 AUTO OPEN TELEGRAM CUSTOMER */
+let customerUsername = data.username.replace("@","").trim();
 if(customerUsername){
-  const cleanUsername = customerUsername.replace("@","");
-  const customerLink = `https://t.me/${cleanUsername}?text=${encodeURIComponent(text)}`;
-  window.open(customerLink, "_blank");
+  let telegramUrl = `https://t.me/${customerUsername}?text=${encodeURIComponent(text)}`;
+  window.open(telegramUrl, "_blank");
 }
 
 alert("Order generated + sent! ✅");
@@ -231,36 +259,4 @@ alert("Copied!");
 function val(id){
 let el=document.getElementById(id);
 return el?el.value:"";
-}
-
-/* AUTO FILL DARI LINK */
-const urlParams = new URLSearchParams(window.location.search);
-
-window.onload = () => {
-
-  if(urlParams.get("product")){
-    product.value = urlParams.get("product");
-    product.onchange();
-  }
-
-  setTimeout(() => {
-    autoFill("tg");
-    autoFill("exp");
-    autoFill("email");
-    autoFill("pass");
-    autoFill("profile");
-    autoFill("pin");
-    autoFill("phone");
-    autoFill("link");
-    autoFill("device");
-  }, 300);
-
-};
-
-function autoFill(id){
-  const el = document.getElementById(id);
-  const value = urlParams.get(id);
-  if(el && value !== null){
-    el.value = value;
-  }
 }
