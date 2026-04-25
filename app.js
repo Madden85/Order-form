@@ -294,34 +294,42 @@ return el?el.value:"";
 // ===============================
 const urlParams = new URLSearchParams(window.location.search);
 
-window.onload = () => {
+window.onload = function () {
 
-  // Product
-  if(urlParams.get("product")){
-    product.value = urlParams.get("product");
-    product.onchange();
-  }
+  const params = new URLSearchParams(window.location.search);
 
-  // Delay sikit sebab form render
+  const productParam = params.get("product");
+  const pin = params.get("pin");
+  const exp = params.get("exp");
+
+  // tunggu page fully ready
   setTimeout(() => {
 
-    if(urlParams.get("tg")){
-      document.getElementById("tg").value = urlParams.get("tg");
-    }
+    const select = document.getElementById("product");
 
-    if(urlParams.get("email")){
-      document.getElementById("email").value = urlParams.get("email");
-    }
+    if(productParam && select){
 
-    if(urlParams.get("profile")){
-      let el = document.getElementById("profile");
-      if(el) el.value = urlParams.get("profile");
-    }
+      // force pilih Netflix
+      for(let i=0; i<select.options.length; i++){
+        if(select.options[i].text.toLowerCase().includes(productParam)){
+          select.selectedIndex = i;
+        }
+      }
 
-    // Auto expiry (30 hari)
-    let expDate = new Date();
-    expDate.setDate(expDate.getDate() + 30);
-    document.getElementById("exp").value = expDate.toISOString().split('T')[0];
+      // trigger form render
+      renderForm();
+
+      // tunggu form keluar dulu
+      setTimeout(()=>{
+
+        const pinInput = document.getElementById("pin");
+        const expInput = document.getElementById("exp");
+
+        if(pinInput) pinInput.value = pin || "";
+        if(expInput) expInput.value = exp || "";
+
+      }, 500);
+    }
 
   }, 300);
 
