@@ -4,25 +4,105 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Create Order</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0d0d0d;
+color:#fff;
+text-align:center;
+}
+
+.wrap{
+width:92%;
+max-width:480px;
+margin:auto;
+padding:20px 0;
+}
+
+.card{
+background:#161616;
+padding:18px;
+border-radius:14px;
+margin-bottom:15px;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:none;
+background:#222;
+color:#fff;
+}
+
+textarea{
+height:150px;
+white-space:pre-line;
+}
+
+.btn{
+width:100%;
+padding:13px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-primary{background:#e50914;color:#fff;}
+.btn-green{background:#0f9d58;color:#fff;}
+
+.output{
+white-space:pre-line;
+text-align:left;
+background:#000;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+}
+
+.hidden{display:none;}
+</style>
 </head>
+
 <body>
 
+<div class="wrap">
+
 <h2>CREATE ORDER</h2>
+
+<div class="card">
 
 <input id="orderNo" type="hidden">
 
 <select id="product">
 <option value="">Pilih Produk</option>
 <option>Netflix premium private profile</option>
+<option>Youtube Premium Own email</option>
+<option>Youtube premium seller email</option>
+<option>Sooka premium</option>
+<option>Spotify premium</option>
+<option>iqiyi premium</option>
+<option>disney+ hotstar</option>
+<option>viu premium</option>
 </select>
 
 <div id="form"></div>
 
-<button id="submitBtn">SUBMIT</button>
+<button class="btn btn-primary" id="submitBtn">SUBMIT</button>
 
-<div id="result"></div>
-<button id="copyBtn">COPY</button>
+<div id="result" class="output hidden"></div>
 
-<script src="app.js"></script>
+<button id="copyBtn" class="btn btn-green hidden">COPY</button>
+
+</div>
+
+</div>
+
+<script src="app.js?v=3"></script>
 </body>
 </html>
