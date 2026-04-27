@@ -1,4 +1,4 @@
-/* 🔥 AUTO FILL FIX (TAMBAH SAHAJA) */
+/* 🔥 AUTO FILL FIX */
 window.addEventListener("load", () => {
 
   const params = new URLSearchParams(window.location.search);
@@ -56,13 +56,8 @@ function setField(id, value){
   if(el && value) el.value = value;
 }
 
-/* ========================= */
-/* ⬇️ SEMUA CODE ASAL KAU */
-/* ========================= */
-
 const form = document.getElementById("form");
 const result = document.getElementById("result");
-const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
@@ -74,7 +69,7 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* 🔥 NOTE (KEKAL EXACT) */
+/* 🔥 NOTE (EXACT DATA KAU) */
 function getNote(p){
 
 p = p.toLowerCase();
@@ -165,10 +160,7 @@ note: `⚠️ Jangan ubah apa2 setting
 p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund`
 };
 
-return {
-emoji:"📦 ACCOUNT",
-note:""
-};
+return {emoji:"📦 ACCOUNT",note:""};
 }
 
 function renderForm(){
@@ -235,18 +227,22 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
-// SAVE background
 fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-// 🔥 FORCE OPEN TELEGRAM
-const tgApp = `tg://resolve?domain=Numo_Acc_Generator&start=${order}`;
-const tgWeb = `https://t.me/Numo_Acc_Generator?start=${order}`;
+/* 🔥 BUTTON OPEN TELEGRAM */
+const btn = document.getElementById("openTelegram");
+btn.classList.remove("hidden");
 
-window.location.href = tgApp;
+btn.onclick = () => {
+  const tgApp = `tg://resolve?domain=Numo_Acc_Generator&start=${order}`;
+  const tgWeb = `https://t.me/Numo_Acc_Generator?start=${order}`;
 
-setTimeout(() => {
-  window.location.href = tgWeb;
-}, 800);
+  window.location.href = tgApp;
+
+  setTimeout(() => {
+    window.location.href = tgWeb;
+  }, 800);
+};
 
 }
 
