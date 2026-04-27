@@ -49,11 +49,8 @@ const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-/* 🔥 API BACKEND (GANTI DENGAN API KAU) */
+/* 🔥 API BACKEND */
 const API_URL = "https://script.google.com/macros/s/AKfycbygES0rnSh7YKTZAmDrrbq0pzJmBQ7M5XT3VNBlFsW5zskT2Pj7FnTm9F_4NPESsm_S/exec";
-
-/* 🔥 BOT LINK (GANTI BOT KAU) */
-const BOT_LINK = "https://t.me/NumoVerifyCode_bot";
 
 /* ========================= */
 product.onchange = renderForm;
@@ -91,7 +88,6 @@ p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHA
 </textarea>`;
 }
 
-/* 👉 PRODUCT LAIN TAK UBAH (KEEP ASAL KAU) */
 }
 
 /* ========================= */
@@ -172,10 +168,11 @@ alert("Copied!");
 };
 
 /* =============================== */
-/* 🔥 AUTO OPEN TELEGRAM BOT */
+/* 🔥 AUTO OPEN TELEGRAM BOT (UPDATED) */
 /* =============================== */
 setTimeout(() => {
-  window.open(`${BOT_LINK}?start=${order}`, "_blank");
+  const botUsername = "Numo_Acc_Generator";
+  window.open(`https://t.me/${botUsername}?start=${order}`, "_blank");
 }, 800);
 
 }
