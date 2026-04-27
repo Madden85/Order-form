@@ -234,7 +234,7 @@ fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 const btn = document.getElementById("openTelegram");
 btn.classList.remove("hidden");
 
-const botLink = `https://t.me/Numo_Acc_Generator?start=${order}`;
+const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
 
 const message = `Hi 👋
 
