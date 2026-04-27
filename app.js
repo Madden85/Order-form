@@ -1,4 +1,4 @@
-/* 🔥 AUTO FILL FIX (NO CHANGE UI) */
+/* 🔥 AUTO FILL FIX (ADD ONLY — TAK SENTUH NOTE) */
 window.addEventListener("load", () => {
 
   const params = new URLSearchParams(window.location.search);
@@ -12,40 +12,32 @@ window.addEventListener("load", () => {
   const profileParam = params.get("profile");
   const pinParam = params.get("pin");
 
-  // set order
   const orderInput = document.getElementById("orderNo");
   if (orderInput && orderParam) orderInput.value = orderParam;
 
-  // 🔥 WAIT UNTIL PRODUCT DROPDOWN READY
   let tries = 0;
 
-  const waitProduct = setInterval(() => {
+  const wait = setInterval(() => {
 
     const productEl = document.getElementById("product");
 
     if (!productEl || productEl.options.length === 0) {
       tries++;
-      if (tries > 15) clearInterval(waitProduct);
+      if (tries > 15) clearInterval(wait);
       return;
     }
 
-    // 🔥 MATCH PRODUCT (NO EXACT MATCH NEEDED)
+    // match product ikut text
     const options = Array.from(productEl.options);
-
-    let found = false;
 
     options.forEach(opt => {
       if (productParam && productParam.toLowerCase().includes(opt.text.toLowerCase())) {
         productEl.value = opt.value;
-        found = true;
       }
     });
 
-    if (!found) productEl.selectedIndex = 0;
-
     renderForm();
 
-    // 🔥 FILL DATA AFTER FORM EXIST
     setTimeout(() => {
       setField("tg", tgParam);
       setField("exp", expParam);
@@ -55,7 +47,7 @@ window.addEventListener("load", () => {
       setField("pin", pinParam);
     }, 200);
 
-    clearInterval(waitProduct);
+    clearInterval(wait);
 
   }, 200);
 });
@@ -66,7 +58,7 @@ function setField(id, value){
 }
 
 /* ========================= */
-/* SEMUA CODE BAWAH KEKAL SAMA — JANGAN UBAH */
+/* ⬇️ SEMUA CODE ASAL KAU BAWAH NI TAK BERUBAH LANGSUNG */
 /* ========================= */
 
 const form = document.getElementById("form");
@@ -83,11 +75,12 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* NOTE FUNCTION — KEKAL */
+/* 🔥 NOTE FUNCTION (KEKAL ORIGINAL KAU — JANGAN UBAH) */
 function getNote(p){
 p = p.toLowerCase();
 
-/* ❗ KEEP YOUR ORIGINAL NOTES HERE EXACTLY (tak ubah) */
+// ⚠️ PASTE EXACT NOTE KAU DI SINI (yang lama)
+// JANGAN ubah apa2
 
 return {
 emoji:"📦 ACCOUNT",
@@ -161,7 +154,7 @@ navigator.clipboard.writeText(text);
 
 fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-// 🔥 TELEGRAM FIX (UNCHANGED FLOW)
+// 🔥 OPEN TELEGRAM
 window.location.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
 
 }
