@@ -74,7 +74,7 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* 🔥 NOTE (EXACT ASAL KAU) */
+/* 🔥 NOTE (KEKAL EXACT) */
 function getNote(p){
 
 p = p.toLowerCase();
@@ -235,11 +235,13 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
-/* SAVE */
-fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
-
-/* 🔥 FIX TELEGRAM (NO BLOCK) */
-window.location.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
+/* 🔥 SAVE + DELAY REDIRECT (FIX) */
+fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`)
+  .then(() => {
+    setTimeout(() => {
+      window.location.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
+    }, 300);
+  });
 
 }
 
