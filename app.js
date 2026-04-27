@@ -12,11 +12,9 @@ window.addEventListener("load", () => {
   const profileParam = params.get("profile");
   const pinParam = params.get("pin");
 
-  // set order
   const orderInput = document.getElementById("orderNo");
   if (orderInput && orderParam) orderInput.value = orderParam;
 
-  // 🔥 FORCE SELECT PRODUCT (robust)
   if (productParam) {
 
     const options = Array.from(product.options);
@@ -36,7 +34,6 @@ window.addEventListener("load", () => {
 
     renderForm();
 
-    // 🔥 FORCE WAIT + RETRY AUTOFILL
     setTimeout(fillAll, 300);
     setTimeout(fillAll, 800);
     setTimeout(fillAll, 1500);
@@ -226,40 +223,4 @@ email: val("email"),
 exp: val("exp"),
 pass: val("pass"),
 profile: val("profile"),
-pin: val("pin")
-};
-
-const productInfo = getNote(p);
-
-let text = `${productInfo.emoji}
-
-ORDER NUMBER: ${order}
-
-📅 Expiry: ${data.exp}
-👤 Username: ${data.username}
-📧 Email: ${data.email}
-`;
-
-if(data.pass) text+=`🔑 Password: ${data.pass}\n`;
-if(data.profile) text+=`👥 Profile: ${data.profile}\n`;
-if(data.pin) text+=`🔢 PIN: ${data.pin}\n`;
-
-text += "\n" + productInfo.note;
-
-result.classList.remove("hidden");
-result.innerText = text;
-
-navigator.clipboard.writeText(text);
-
-fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
-
-setTimeout(() => {
-  window.open(`https://t.me/Numo_Acc_Generator?start=${order}`, "_blank");
-}, 800);
-
-}
-
-function val(id){
-let el=document.getElementById(id);
-return el?el.value:"";
-}
+pin: val("
