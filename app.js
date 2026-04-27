@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
 
   const orderParam = params.get("order");
   const productParam = params.get("product");
-  const tgParam = params.get("tg");
+  const tgParam = params.get("tg") || params.get("username"); // 🔥 FIX
   const expParam = params.get("exp");
   const emailParam = params.get("email");
   const passParam = params.get("pass");
@@ -53,54 +53,36 @@ return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
 /* ========================= */
-/* 🔥 NOTE EXACT (NO CHANGE) */
+/* 🔥 NOTE FULL (SAMA MACAM DATA KAU) */
 function getNote(p){
 
 p = p.toLowerCase();
 
-if(p.includes("netflix")) return {
-emoji: "🎬 NETFLIX",
-note: `
-🔴 ⚠️ JANGAN UBAH apa2 setting
-🔴 ⚠️ JANGAN KACAU profile lain
-🔴 1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+if(p.includes("netflix")) return `⚠️ JANGAN UBAH apa2 setting
+⚠️ JANGAN KACAU profile lain
+1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,
 PROFILE AKAN DINYAHAKTIF & TIADA REFUND 
 
-Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
-`
-};
+Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab`;
 
-if(p.includes("youtube")) return {
-emoji: "📺 YOUTUBE",
-note: `
-Hanya 1 device shj dibenarkan
+if(p.includes("youtube")) return `Hanya 1 device shj dibenarkan
 
 🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
 
-🔷Selepas log in, tak boleh tukar password
-`
-};
+🔷Selepas log in, tak boleh tukar password`;
 
-if(p.includes("sooka")) return {
-emoji: "📡 SOOKA",
-note: `
-⚠️ Jangan ubah apa2 setting
+if(p.includes("sooka")) return `⚠️ Jangan ubah apa2 setting
 
 ❌ Boleh log in 1 device sahaja
 
 1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 DEVICE, 
-ACCESS AKAN DI NYAHAKTIF & TIADA REFUND
-`
-};
+ACCESS AKAN DI NYAHAKTIF & TIADA REFUND`;
 
-if(p.includes("spotify")) return {
-emoji: "🎧 SPOTIFY",
-note: `
-1) Tekan TERIMA JEMPUTAN
+if(p.includes("spotify")) return `1) Tekan TERIMA JEMPUTAN
 
 2) DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
 (semua muzik yang disimpan akan kekal).
@@ -109,29 +91,19 @@ note: `
 
 4) Siap — biarkan muzik bermula.
 
- Lepas dah boleh join family, sila inform admin semula
+Lepas dah boleh join family, sila inform admin semula
 
- Hanya 1 DEVICE SAHAJA untuk 1 langganan
-`
-};
+Hanya 1 DEVICE SAHAJA untuk 1 langganan`;
 
-if(p.includes("iqiyi")) return {
-emoji: "🎥 IQIYI",
-note: `
-⚠️ Jangan ubah apa2 setting
+if(p.includes("iqiyi")) return `⚠️ Jangan ubah apa2 setting
 
 ❌Boleh log in 1 device sahaja
 
 1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
-p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
-`
-};
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund`;
 
-if(p.includes("disney")) return {
-emoji: "🏰 DISNEY+ HOTSTAR",
-note: `
-1) Buka app Disney+ Hotstar
+if(p.includes("disney")) return `1) Buka app Disney+ Hotstar
 
 2) Masukkan no phone
 
@@ -141,31 +113,20 @@ note: `
 
 Hanya 1 DEVICE SAHAJA untuk 1 langganan
 
-Jangan ganggu profile orang lain
-`
-};
+Jangan ganggu profile orang lain`;
 
-if(p.includes("viu")) return {
-emoji: "📱 VIU",
-note: `
-⚠️ Jangan ubah apa2 setting
+if(p.includes("viu")) return `⚠️ Jangan ubah apa2 setting
 
 ❌Boleh log in 1 device sahaja
 
 1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
-p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
-`
-};
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund`;
 
-return {
-emoji: "📦 ACCOUNT",
-note: ""
-};
+return "";
 }
 
 /* ========================= */
-/* 🔥 FORM */
 function renderForm(){
 let p = product.value.toLowerCase();
 
@@ -184,71 +145,28 @@ form.innerHTML = common + `
 ${input("pass","Password")}
 ${input("profile","Nama Profile")}
 ${input("pin","Pincode")}
-<textarea readonly>${getNote(p).note}</textarea>
+<textarea readonly>${getNote(p)}</textarea>
 `;
-
 }
 
 /* ========================= */
-/* 🔥 GENERATE */
-submitBtn.onclick = generate;
+submitBtn.onclick = function(){
 
-function generate(){
+let order = new URLSearchParams(window.location.search).get("order");
 
-let p = product.value;
-if(!p) return alert("Pilih produk");
-
-let order = new URLSearchParams(window.location.search).get("order") || Math.floor(10000 + Math.random()*90000);
-
-let data = {
-order: order,
-product: p,
-username: val("tg"),
-email: val("email"),
-exp: val("exp"),
-pass: val("pass"),
-profile: val("profile"),
-pin: val("pin")
-};
-
-const productInfo = getNote(p);
-
-/* TEXT */
-let text = `${productInfo.emoji}
-
-ORDER NUMBER: ${order}
-
-📅 Expiry: ${data.exp}
-👤 Username: ${data.username}
-📧 Email: ${data.email}
-`;
-
-if(data.pass) text+=`🔑 Password: ${data.pass}\n`;
-if(data.profile) text+=`👥 Profile: ${data.profile}\n`;
-if(data.pin) text+=`🔢 PIN: ${data.pin}\n`;
-
-text += "\n" + productInfo.note;
-
-/* OUTPUT */
-result.classList.remove("hidden");
-result.innerText = text;
-
-navigator.clipboard.writeText(text);
-
-/* SAVE */
 fetch(API_URL,{
 method:"POST",
-body: JSON.stringify(data)
+body: JSON.stringify({
+order: order,
+username: val("tg")
+})
 });
 
-alert("Order generated + sent! ✅");
+setTimeout(()=>{
+window.open(`https://t.me/Numo_Acc_Generator?start=${order}`,"_blank");
+},500);
 
-/* TELEGRAM */
-setTimeout(() => {
-  window.open(`https://t.me/Numo_Acc_Generator?start=${order}`, "_blank");
-}, 800);
-
-}
+};
 
 function val(id){
 let el=document.getElementById(id);
