@@ -1,44 +1,54 @@
-/* 🔥 AUTO FILL DARI LINK BOT */
+/* 🔥 FORCE AUTOFILL FIX */
 window.addEventListener("load", () => {
+
   const params = new URLSearchParams(window.location.search);
 
   const orderParam = params.get("order");
   const productParam = params.get("product");
-
   const tgParam = params.get("tg") || params.get("username");
-
   const expParam = params.get("exp");
   const emailParam = params.get("email");
   const passParam = params.get("pass");
   const profileParam = params.get("profile");
   const pinParam = params.get("pin");
 
-  if (orderParam) {
-    const orderInput = document.getElementById("orderNo");
-    if (orderInput) orderInput.value = orderParam;
-  }
+  // set order
+  const orderInput = document.getElementById("orderNo");
+  if (orderInput && orderParam) orderInput.value = orderParam;
 
+  // 🔥 FORCE SELECT PRODUCT (robust)
   if (productParam) {
 
     const options = Array.from(product.options);
-    const match = options.find(opt =>
-      productParam.toLowerCase().includes(opt.value.toLowerCase())
-    );
 
-    if (match) {
-      product.value = match.value;
+    let found = false;
+
+    options.forEach(opt => {
+      if (productParam.toLowerCase().includes(opt.value.toLowerCase())) {
+        product.value = opt.value;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      product.selectedIndex = 0;
     }
 
     renderForm();
 
-    setTimeout(() => {
+    // 🔥 FORCE WAIT + RETRY AUTOFILL
+    setTimeout(fillAll, 300);
+    setTimeout(fillAll, 800);
+    setTimeout(fillAll, 1500);
+
+    function fillAll(){
       setField("tg", tgParam);
       setField("exp", expParam);
       setField("email", emailParam);
       setField("pass", passParam);
       setField("profile", profileParam);
       setField("pin", pinParam);
-    }, 400);
+    }
   }
 });
 
@@ -64,7 +74,7 @@ return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
 /* ========================= */
-/* 🔥 NOTE (EMOJI ADDED ONLY) */
+/* 🔥 NOTE (UNCHANGED) */
 function getNote(p){
 
 p = p.toLowerCase();
@@ -72,36 +82,36 @@ p = p.toLowerCase();
 if(p.includes("netflix")) return {
 emoji: "🎬 NETFLIX",
 note: `
-🎬 🔴 ⚠️ JANGAN UBAH apa2 setting
-🎬 🔴 ⚠️ JANGAN KACAU profile lain
-🎬 🔴 1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+🔴 ⚠️ JANGAN UBAH apa2 setting
+🔴 ⚠️ JANGAN KACAU profile lain
+🔴 1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,
 PROFILE AKAN DINYAHAKTIF & TIADA REFUND 
 
-🎬 Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
+Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
 `
 };
 
 if(p.includes("youtube")) return {
 emoji: "📺 YOUTUBE",
 note: `
-📺 Hanya 1 device shj dibenarkan
+Hanya 1 device shj dibenarkan
 
-📺 🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
+🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
 
-📺 🔷Selepas log in, tak boleh tukar password
+🔷Selepas log in, tak boleh tukar password
 `
 };
 
 if(p.includes("sooka")) return {
 emoji: "📡 SOOKA",
 note: `
-📡 ⚠️ Jangan ubah apa2 setting
+⚠️ Jangan ubah apa2 setting
 
-📡 ❌ Boleh log in 1 device sahaja
+❌ Boleh log in 1 device sahaja
 
-📡 1️⃣ HANYA 1 screen sahaja pada satu2 masa
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 DEVICE, 
 ACCESS AKAN DI NYAHAKTIF & TIADA REFUND
@@ -111,29 +121,29 @@ ACCESS AKAN DI NYAHAKTIF & TIADA REFUND
 if(p.includes("spotify")) return {
 emoji: "🎧 SPOTIFY",
 note: `
-🎧 1) Tekan TERIMA JEMPUTAN
+1) Tekan TERIMA JEMPUTAN
 
-🎧 2) DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
+2) DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
 (semua muzik yang disimpan akan kekal).
 
-🎧 3) Sahkan alamat anda - Lebuh Nipah 1
+3) Sahkan alamat anda - Lebuh Nipah 1
 
-🎧 4) Siap — biarkan muzik bermula.
+4) Siap — biarkan muzik bermula.
 
-🎧 Lepas dah boleh join family, sila inform admin semula
+ Lepas dah boleh join family, sila inform admin semula
 
-🎧 Hanya 1 DEVICE SAHAJA untuk 1 langganan
+ Hanya 1 DEVICE SAHAJA untuk 1 langganan
 `
 };
 
 if(p.includes("iqiyi")) return {
 emoji: "🎥 IQIYI",
 note: `
-🎥 ⚠️ Jangan ubah apa2 setting
+⚠️ Jangan ubah apa2 setting
 
-🎥 ❌Boleh log in 1 device sahaja
+❌Boleh log in 1 device sahaja
 
-🎥 1️⃣ HANYA 1 screen sahaja pada satu2 masa
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
 `
@@ -142,28 +152,28 @@ p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyah
 if(p.includes("disney")) return {
 emoji: "🏰 DISNEY+ HOTSTAR",
 note: `
-🏰 1) Buka app Disney+ Hotstar
+1) Buka app Disney+ Hotstar
 
-🏰 2) Masukkan no phone
+2) Masukkan no phone
 
-🏰 3) Masukkan code yang admin akan bagi
+3) Masukkan code yang admin akan bagi
 
-🏰 4) Siap
+4) Siap
 
-🏰 Hanya 1 DEVICE SAHAJA untuk 1 langganan
+Hanya 1 DEVICE SAHAJA untuk 1 langganan
 
-🏰 Jangan ganggu profile orang lain
+Jangan ganggu profile orang lain
 `
 };
 
 if(p.includes("viu")) return {
 emoji: "📱 VIU",
 note: `
-📱 ⚠️ Jangan ubah apa2 setting
+⚠️ Jangan ubah apa2 setting
 
-📱 ❌Boleh log in 1 device sahaja
+❌Boleh log in 1 device sahaja
 
-📱 1️⃣ HANYA 1 screen sahaja pada satu2 masa
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
 
 p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
 `
@@ -176,7 +186,6 @@ note: ""
 }
 
 /* ========================= */
-/* 🔥 FORM */
 function renderForm(){
 let p = product.value.toLowerCase();
 
@@ -197,11 +206,9 @@ ${input("profile","Nama Profile")}
 ${input("pin","Pincode")}
 <textarea readonly>${getNote(p).note}</textarea>
 `;
-
 }
 
 /* ========================= */
-/* 🔥 GENERATE */
 submitBtn.onclick = generate;
 
 function generate(){
@@ -209,7 +216,7 @@ function generate(){
 let p = product.value;
 if(!p) return alert("Pilih produk");
 
-let order = new URLSearchParams(window.location.search).get("order") || Math.floor(10000 + Math.random()*90000);
+let order = new URLSearchParams(window.location.search).get("order");
 
 let data = {
 order: order,
@@ -244,20 +251,8 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
-/* SAVE */
-fetch(`${API_URL}?mode=save` +
-  `&order=${encodeURIComponent(data.order)}` +
-  `&username=${encodeURIComponent(data.username)}` +
-  `&email=${encodeURIComponent(data.email)}` +
-  `&exp=${encodeURIComponent(data.exp)}` +
-  `&pass=${encodeURIComponent(data.pass)}` +
-  `&profile=${encodeURIComponent(data.profile)}` +
-  `&pin=${encodeURIComponent(data.pin)}`
-);
+fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-alert("Order generated + sent! ✅");
-
-/* TELEGRAM */
 setTimeout(() => {
   window.open(`https://t.me/Numo_Acc_Generator?start=${order}`, "_blank");
 }, 800);
