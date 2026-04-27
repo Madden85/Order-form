@@ -1,4 +1,4 @@
-/* 🔥 AUTO FILL FIX (ADD ONLY — TAK SENTUH NOTE) */
+/* 🔥 AUTO FILL FIX (TAMBAH SAHAJA) */
 window.addEventListener("load", () => {
 
   const params = new URLSearchParams(window.location.search);
@@ -27,7 +27,6 @@ window.addEventListener("load", () => {
       return;
     }
 
-    // match product ikut text
     const options = Array.from(productEl.options);
 
     options.forEach(opt => {
@@ -58,7 +57,7 @@ function setField(id, value){
 }
 
 /* ========================= */
-/* ⬇️ SEMUA CODE ASAL KAU BAWAH NI TAK BERUBAH LANGSUNG */
+/* ⬇️ SEMUA CODE ASAL KAU */
 /* ========================= */
 
 const form = document.getElementById("form");
@@ -75,12 +74,96 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* 🔥 NOTE FUNCTION (KEKAL ORIGINAL KAU — JANGAN UBAH) */
+/* 🔥 NOTE (EXACT ASAL KAU) */
 function getNote(p){
+
 p = p.toLowerCase();
 
-// ⚠️ PASTE EXACT NOTE KAU DI SINI (yang lama)
-// JANGAN ubah apa2
+if(p.includes("netflix")) return {
+emoji: "🎬 NETFLIX",
+note: `⚠️ JANGAN UBAH apa2 setting
+⚠️ JANGAN KACAU profile lain
+1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,
+PROFILE AKAN DINYAHAKTIF & TIADA REFUND 
+
+Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab`
+};
+
+if(p.includes("youtube")) return {
+emoji: "📺 YOUTUBE",
+note: `Hanya 1 device shj dibenarkan
+
+🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
+
+🔷Selepas log in, tak boleh tukar password`
+};
+
+if(p.includes("sooka")) return {
+emoji: "📡 SOOKA",
+note: `⚠️ Jangan ubah apa2 setting
+
+❌ Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 DEVICE, 
+ACCESS AKAN DI NYAHAKTIF & TIADA REFUND`
+};
+
+if(p.includes("spotify")) return {
+emoji: "🎧 SPOTIFY",
+note: `1) Tekan TERIMA JEMPUTAN
+
+2) DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
+(semua muzik yang disimpan akan kekal).
+
+3) Sahkan alamat anda - Lebuh Nipah 1
+
+4) Siap — biarkan muzik bermula.
+
+ Lepas dah boleh join family, sila inform admin semula
+
+ Hanya 1 DEVICE SAHAJA untuk 1 langganan`
+};
+
+if(p.includes("iqiyi")) return {
+emoji: "🎥 IQIYI",
+note: `⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund`
+};
+
+if(p.includes("disney")) return {
+emoji: "🏰 DISNEY+ HOTSTAR",
+note: `1) Buka app Disney+ Hotstar
+
+2) Masukkan no phone
+
+3) Masukkan code yang admin akan bagi
+
+4) Siap
+
+Hanya 1 DEVICE SAHAJA untuk 1 langganan
+
+Jangan ganggu profile orang lain`
+};
+
+if(p.includes("viu")) return {
+emoji: "📱 VIU",
+note: `⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund`
+};
 
 return {
 emoji:"📦 ACCOUNT",
@@ -152,9 +235,10 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
+/* SAVE */
 fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-// 🔥 OPEN TELEGRAM
+/* 🔥 FIX TELEGRAM (NO BLOCK) */
 window.location.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
 
 }
