@@ -235,13 +235,18 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
-/* 🔥 SAVE + DELAY REDIRECT (FIX) */
-fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`)
-  .then(() => {
-    setTimeout(() => {
-      window.location.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
-    }, 300);
-  });
+// SAVE background
+fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
+
+// 🔥 FORCE OPEN TELEGRAM
+const tgApp = `tg://resolve?domain=Numo_Acc_Generator&start=${order}`;
+const tgWeb = `https://t.me/Numo_Acc_Generator?start=${order}`;
+
+window.location.href = tgApp;
+
+setTimeout(() => {
+  window.location.href = tgWeb;
+}, 800);
 
 }
 
