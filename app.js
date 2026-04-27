@@ -1,4 +1,4 @@
-/* 🔥 AUTO FILL DARI LINK BOT - ORIGINAL KEEP */
+/* 🔥 AUTO FILL DARI LINK BOT */
 window.addEventListener("load", () => {
   const params = new URLSearchParams(window.location.search);
 
@@ -10,9 +10,6 @@ window.addEventListener("load", () => {
   const passParam = params.get("pass");
   const profileParam = params.get("profile");
   const pinParam = params.get("pin");
-  const phoneParam = params.get("phone");
-  const linkParam = params.get("link");
-  const deviceParam = params.get("device");
 
   if (orderParam) {
     const orderInput = document.getElementById("orderNo");
@@ -30,9 +27,6 @@ window.addEventListener("load", () => {
       setField("pass", passParam);
       setField("profile", profileParam);
       setField("pin", pinParam);
-      setField("phone", phoneParam);
-      setField("link", linkParam);
-      setField("device", deviceParam);
     }, 300);
   }
 });
@@ -42,14 +36,13 @@ function setField(id, value){
   if(el && value) el.value = value;
 }
 
-/* 🔥 ORIGINAL VAR */
+/* ========================= */
 const form = document.getElementById("form");
 const result = document.getElementById("result");
 const copyBtn = document.getElementById("copyBtn");
 const product = document.getElementById("product");
 const submitBtn = document.getElementById("submitBtn");
 
-/* 🔥 API BACKEND */
 const API_URL = "https://script.google.com/macros/s/AKfycbygES0rnSh7YKTZAmDrrbq0pzJmBQ7M5XT3VNBlFsW5zskT2Pj7FnTm9F_4NPESsm_S/exec";
 
 /* ========================= */
@@ -59,7 +52,120 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* 🔥 FORM ORIGINAL (TAK UBAH) */
+/* ========================= */
+/* 🔥 NOTE EXACT (NO CHANGE) */
+function getNote(p){
+
+p = p.toLowerCase();
+
+if(p.includes("netflix")) return {
+emoji: "🎬 NETFLIX",
+note: `
+🔴 ⚠️ JANGAN UBAH apa2 setting
+🔴 ⚠️ JANGAN KACAU profile lain
+🔴 1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,
+PROFILE AKAN DINYAHAKTIF & TIADA REFUND 
+
+Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara random bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
+`
+};
+
+if(p.includes("youtube")) return {
+emoji: "📺 YOUTUBE",
+note: `
+Hanya 1 device shj dibenarkan
+
+🔷Sila masuk youtube, tekan add account, masuk detail yg diberi dan tekan log in
+
+🔷Selepas log in, tak boleh tukar password
+`
+};
+
+if(p.includes("sooka")) return {
+emoji: "📡 SOOKA",
+note: `
+⚠️ Jangan ubah apa2 setting
+
+❌ Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 DEVICE, 
+ACCESS AKAN DI NYAHAKTIF & TIADA REFUND
+`
+};
+
+if(p.includes("spotify")) return {
+emoji: "🎧 SPOTIFY",
+note: `
+1) Tekan TERIMA JEMPUTAN
+
+2) DAFTAR AKAUN SPOTIFY atau LOG MASUK menggunakan akaun anda yang sedia ada
+(semua muzik yang disimpan akan kekal).
+
+3) Sahkan alamat anda - Lebuh Nipah 1
+
+4) Siap — biarkan muzik bermula.
+
+ Lepas dah boleh join family, sila inform admin semula
+
+ Hanya 1 DEVICE SAHAJA untuk 1 langganan
+`
+};
+
+if(p.includes("iqiyi")) return {
+emoji: "🎥 IQIYI",
+note: `
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+`
+};
+
+if(p.includes("disney")) return {
+emoji: "🏰 DISNEY+ HOTSTAR",
+note: `
+1) Buka app Disney+ Hotstar
+
+2) Masukkan no phone
+
+3) Masukkan code yang admin akan bagi
+
+4) Siap
+
+Hanya 1 DEVICE SAHAJA untuk 1 langganan
+
+Jangan ganggu profile orang lain
+`
+};
+
+if(p.includes("viu")) return {
+emoji: "📱 VIU",
+note: `
+⚠️ Jangan ubah apa2 setting
+
+❌Boleh log in 1 device sahaja
+
+1️⃣ HANYA 1 screen sahaja pada satu2 masa
+
+p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund
+`
+};
+
+return {
+emoji: "📦 ACCOUNT",
+note: ""
+};
+}
+
+/* ========================= */
+/* 🔥 FORM */
 function renderForm(){
 let p = product.value.toLowerCase();
 
@@ -74,24 +180,17 @@ ${input("exp","Expired Date")}
 ${input("email","Email Address")}
 `;
 
-if(p.includes("netflix")){
 form.innerHTML = common + `
 ${input("pass","Password")}
 ${input("profile","Nama Profile")}
 ${input("pin","Pincode")}
-<textarea readonly>
-⚠️ JANGAN UBAH apa2 setting
-⚠️ JANGAN KACAU profile lain
-1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa
-
-p/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHAKTIF & TIADA REFUND ❗️Peringatan Bermula Julai 2025 kami dari pihak NuMo ventures akan menukar password netflix secara RANDOM bagi mengelakkan acc diceroboh pihak yang tidak bertanggungjawab
-</textarea>`;
-}
+<textarea readonly>${getNote(p).note}</textarea>
+`;
 
 }
 
 /* ========================= */
-/* 🔥 GENERATE + AUTO FLOW */
+/* 🔥 GENERATE */
 submitBtn.onclick = generate;
 
 function generate(){
@@ -107,77 +206,50 @@ product: p,
 username: val("tg"),
 email: val("email"),
 exp: val("exp"),
-phone: val("phone"),
 pass: val("pass"),
 profile: val("profile"),
-pin: val("pin"),
-link: val("link")
+pin: val("pin")
 };
 
-/* 🔥 TEXT ORIGINAL */
-let text = `${p.toUpperCase()}
+const productInfo = getNote(p);
+
+/* TEXT */
+let text = `${productInfo.emoji}
 
 ORDER NUMBER: ${order}
 
-Expiry: ${data.exp}
-Username: ${data.username}
-Email: ${data.email}
+📅 Expiry: ${data.exp}
+👤 Username: ${data.username}
+📧 Email: ${data.email}
 `;
 
-if(data.pass) text+=`Password: ${data.pass}\n`;
-if(data.profile) text+=`Profile name: ${data.profile}\n`;
-if(data.pin) text+=`Pincode: ${data.pin}\n`;
-if(data.phone) text+=`Phone: ${data.phone}\n`;
-if(data.link) text+=`Link: ${data.link}\n`;
+if(data.pass) text+=`🔑 Password: ${data.pass}\n`;
+if(data.profile) text+=`👥 Profile: ${data.profile}\n`;
+if(data.pin) text+=`🔢 PIN: ${data.pin}\n`;
 
-let note = document.querySelector("textarea")?.value || "";
-text += "\n\n" + note;
-
-text += `
-
--------------------------------------
-
-GENERATE CODE atau VERIFY EMAIL anda sendiri disini
-
-❗PENTING❗ Sila gunakan order number yang diberikan di atas 👆 
-
-https://https://numoverifycode2.netlify.app/
-`;
+text += "\n" + productInfo.note;
 
 /* OUTPUT */
 result.classList.remove("hidden");
 result.innerText = text;
 
-/* COPY */
 navigator.clipboard.writeText(text);
 
-/* 🔥 SEND DATA KE GOOGLE SHEET */
+/* SAVE */
 fetch(API_URL,{
 method:"POST",
 body: JSON.stringify(data)
 });
 
-/* ALERT */
 alert("Order generated + sent! ✅");
 
-copyBtn.classList.remove("hidden");
-
-copyBtn.onclick = ()=>{
-navigator.clipboard.writeText(text);
-alert("Copied!");
-};
-
-/* =============================== */
-/* 🔥 AUTO OPEN TELEGRAM BOT (UPDATED) */
-/* =============================== */
+/* TELEGRAM */
 setTimeout(() => {
-  const botUsername = "Numo_Acc_Generator";
-  window.open(`https://t.me/${botUsername}?start=${order}`, "_blank");
+  window.open(`https://t.me/Numo_Acc_Generator?start=${order}`, "_blank");
 }, 800);
 
 }
 
-/* ========================= */
 function val(id){
 let el=document.getElementById(id);
 return el?el.value:"";
