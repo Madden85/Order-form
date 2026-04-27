@@ -227,12 +227,22 @@ result.innerText = text;
 
 navigator.clipboard.writeText(text);
 
+// save
 fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-/* 🔥 FIX TELEGRAM (CLICK ONLY) */
+// 🔥 STEP 21 FIX (OPEN CHAT CUSTOMER)
 const btn = document.getElementById("openTelegram");
 btn.classList.remove("hidden");
-btn.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
+
+const botLink = `https://t.me/Numo_Acc_Generator?start=${order}`;
+
+const message = `Hi 👋
+
+Klik link bawah untuk dapatkan akaun:
+
+${botLink}`;
+
+btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
 
 }
 
