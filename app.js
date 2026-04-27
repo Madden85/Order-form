@@ -1,4 +1,4 @@
-/* 🔥 AUTO FILL FIX */
+/* 🔥 AUTO FILL */
 window.addEventListener("load", () => {
 
   const params = new URLSearchParams(window.location.search);
@@ -69,7 +69,7 @@ function input(id,placeholder){
 return `<input id="${id}" placeholder="${placeholder}">`;
 }
 
-/* 🔥 NOTE (EXACT DATA KAU) */
+/* 🔥 NOTE (UNCHANGED) */
 function getNote(p){
 
 p = p.toLowerCase();
@@ -229,20 +229,10 @@ navigator.clipboard.writeText(text);
 
 fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
 
-/* 🔥 BUTTON OPEN TELEGRAM */
+/* 🔥 FIX TELEGRAM (CLICK ONLY) */
 const btn = document.getElementById("openTelegram");
 btn.classList.remove("hidden");
-
-btn.onclick = () => {
-  const tgApp = `tg://resolve?domain=Numo_Acc_Generator&start=${order}`;
-  const tgWeb = `https://t.me/Numo_Acc_Generator?start=${order}`;
-
-  window.location.href = tgApp;
-
-  setTimeout(() => {
-    window.location.href = tgWeb;
-  }, 800);
-};
+btn.href = `https://t.me/Numo_Acc_Generator?start=${order}`;
 
 }
 
