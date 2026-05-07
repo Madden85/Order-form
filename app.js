@@ -5,7 +5,9 @@ const submitBtn = document.getElementById("submitBtn");
 const result = document.getElementById("result");
 
 function input(id, placeholder, value = "") {
-    return `<input id="${id}" type="text" placeholder="${placeholder}" value="${value}">`;
+    // Memastikan value tidak "undefined" atau "null"
+    const safeValue = (value === "null" || value === null) ? "" : value;
+    return `<input id="${id}" type="text" placeholder="${placeholder}" value="${safeValue}">`;
 }
 
 function getNote(p) {
@@ -26,50 +28,48 @@ function renderForm() {
     let p = product.value.toLowerCase();
     if (!p) { form.innerHTML = ""; return; }
 
-    const urlData = {
-        tg: params.get("tg") || "",
-        exp: params.get("exp") || "",
-        email: params.get("email") || "",
-        pass: params.get("pass") || "",
-        profile: params.get("profile") || "",
-        pin: params.get("pin") || "",
-        link: params.get("link") || "",
-        device: params.get("device") || ""
-    };
+    // Ambil data terus dari URL
+    const tgVal = params.get("tg") || "";
+    const expVal = params.get("exp") || "";
+    const emailVal = params.get("email") || "";
+    const passVal = params.get("pass") || "";
+    const profileVal = params.get("profile") || "";
+    const pinVal = params.get("pin") || "";
 
-    let html = `${input("tg", "Username Telegram", urlData.tg)}${input("exp", "Expired Date", urlData.exp)}`;
+    let html = `${input("tg", "Username Telegram", tgVal)}${input("exp", "Expired Date", expVal)}`;
 
     if (p.includes("netflix")) {
-        html += `${input("email", "Email Address", urlData.email)}${input("pass", "Password", urlData.pass)}${input("profile", "Nama Profile", urlData.profile)}${input("pin", "Pincode", urlData.pin)}`;
+        html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}${input("pin", "Pincode", pinVal)}`;
     } else if (p.includes("youtube premium own")) {
-        html += `${input("email", "Email Address", urlData.email)}`;
+        html += `${input("email", "Email Address", emailVal)}`;
     } else if (p.includes("youtube premium seller")) {
-        html += `${input("email", "Email Address", urlData.email)}${input("pass", "Password", urlData.pass)}`;
+        html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("sooka")) {
-        html += `${input("device", "Device", urlData.device)}${input("email", "Email", urlData.email)}${input("pass", "Password", urlData.pass)}`;
+        html += `${input("device", "Device", params.get("device"))}${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("spotify")) {
-        html += `${input("email", "Email", urlData.email)}${input("link", "Link", urlData.link)}`;
+        html += `${input("email", "Email", emailVal)}${input("link", "Link", params.get("link"))}`;
     } else if (p.includes("iqiyi")) {
-        html += `${input("email", "Email", urlData.email)}${input("pass", "Password", urlData.pass)}`;
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("disney")) {
-        html += `${input("email", "Email", urlData.email)}${input("pass", "Password", urlData.pass)}${input("profile", "Nama profile", urlData.profile)}`;
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama profile", profileVal)}`;
     } else if (p.includes("viu")) {
-        html += `${input("email", "Email", urlData.email)}${input("pass", "Password", urlData.pass)}`;
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
     }
 
     form.innerHTML = html;
 }
 
+// Fungsi pengesanan produk yang lebih kuat
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     const urlProduct = params.get("product");
     
     if (urlProduct) {
-        let decodedProduct = decodeURIComponent(urlProduct).toLowerCase();
+        const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().trim();
         for (let i = 0; i < product.options.length; i++) {
-            let optionText = product.options[i].text.toLowerCase();
-            // Logik padanan lebih luas
-            if (optionText === decodedProduct || optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
+            const optionText = product.options[i].text.toLowerCase().trim();
+            // Padanan jika mengandungi kata kunci (e.g. "youtube")
+            if (optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
                 product.selectedIndex = i;
                 renderForm();
                 break;
