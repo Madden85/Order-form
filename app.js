@@ -26,7 +26,6 @@ function renderForm() {
     let p = product.value.toLowerCase();
     if (!p) { form.innerHTML = ""; return; }
 
-    // Ambil data dari URL untuk autofill
     const urlData = {
         tg: params.get("tg") || "",
         exp: params.get("exp") || "",
@@ -38,14 +37,14 @@ function renderForm() {
         device: params.get("device") || ""
     };
 
-    let html = `${input("tg", "Username", urlData.tg)}${input("exp", "Expired date", urlData.exp)}`;
+    let html = `${input("tg", "Username Telegram", urlData.tg)}${input("exp", "Expired Date", urlData.exp)}`;
 
     if (p.includes("netflix")) {
         html += `${input("email", "Email Address", urlData.email)}${input("pass", "Password", urlData.pass)}${input("profile", "Nama Profile", urlData.profile)}${input("pin", "Pincode", urlData.pin)}`;
     } else if (p.includes("youtube premium own")) {
-        html += `${input("email", "Email address", urlData.email)}`;
+        html += `${input("email", "Email Address", urlData.email)}`;
     } else if (p.includes("youtube premium seller")) {
-        html += `${input("email", "Email address", urlData.email)}${input("pass", "Password", urlData.pass)}`;
+        html += `${input("email", "Email Address", urlData.email)}${input("pass", "Password", urlData.pass)}`;
     } else if (p.includes("sooka")) {
         html += `${input("device", "Device", urlData.device)}${input("email", "Email", urlData.email)}${input("pass", "Password", urlData.pass)}`;
     } else if (p.includes("spotify")) {
@@ -61,14 +60,16 @@ function renderForm() {
     form.innerHTML = html;
 }
 
-// Fungsi untuk auto-detect produk dari URL masa page load
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     const urlProduct = params.get("product");
+    
     if (urlProduct) {
-        // Cari option yang paling hampir sama dengan nama produk dalam URL
+        let decodedProduct = decodeURIComponent(urlProduct).toLowerCase();
         for (let i = 0; i < product.options.length; i++) {
-            if (product.options[i].text.toLowerCase().includes(urlProduct.toLowerCase())) {
+            let optionText = product.options[i].text.toLowerCase();
+            // Logik padanan lebih luas
+            if (optionText === decodedProduct || optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
                 product.selectedIndex = i;
                 renderForm();
                 break;
@@ -85,10 +86,9 @@ function generate() {
     let order = new URLSearchParams(window.location.search).get("order");
     const info = getNote(p);
 
-    let text = `${info.emoji}\nORDER NUMBER: ${order}\n👤 Username: ${val("tg")}\n📅 Expired date: ${val("exp")}\n`;
-    if (val("email")) text += `📧 Email: ${val("email")}\n`;
-    if (val("link")) text += `🔗 Link: ${val("link")}\n`;
+    let text = `${info.emoji}\nORDER NUMBER: ${order}\n📅 Expiry: ${val("exp")}\n👤 Username: ${val("tg")}\n📧 Email: ${val("email")}\n`;
     if (val("pass")) text += `🔑 Password: ${val("pass")}\n`;
+    if (val("link")) text += `🔗 Link: ${val("link")}\n`;
     if (val("device")) text += `📱 Device: ${val("device")}\n`;
     if (val("profile")) text += `👥 Profile: ${val("profile")}\n`;
     if (val("pin")) text += `🔢 PIN: ${val("pin")}\n`;
