@@ -5,7 +5,6 @@ const submitBtn = document.getElementById("submitBtn");
 const result = document.getElementById("result");
 
 function input(id, placeholder, value = "") {
-    // Memastikan value tidak "undefined" atau "null"
     const safeValue = (value === "null" || value === null) ? "" : value;
     return `<input id="${id}" type="text" placeholder="${placeholder}" value="${safeValue}">`;
 }
@@ -28,7 +27,6 @@ function renderForm() {
     let p = product.value.toLowerCase();
     if (!p) { form.innerHTML = ""; return; }
 
-    // Ambil data terus dari URL
     const tgVal = params.get("tg") || "";
     const expVal = params.get("exp") || "";
     const emailVal = params.get("email") || "";
@@ -41,25 +39,22 @@ function renderForm() {
     if (p.includes("netflix")) {
         html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}${input("pin", "Pincode", pinVal)}`;
     } else if (p.includes("youtube premium own")) {
-        html += `${input("email", "Email Address", emailVal)}`;
+        html += `${input("email", "Email Address (Customer)", emailVal)}`;
     } else if (p.includes("youtube premium seller")) {
         html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("sooka")) {
-        html += `${input("device", "Device", params.get("device"))}${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+        html += `${input("profile", "Device Type", profileVal)}${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("spotify")) {
-        html += `${input("email", "Email", emailVal)}${input("link", "Link", params.get("link"))}`;
-    } else if (p.includes("iqiyi")) {
-        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+        html += `${input("email", "Link Invitation", emailVal)}`;
+    } else if (p.includes("iqiyi") || p.includes("viu")) {
+        html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("disney")) {
-        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama profile", profileVal)}`;
-    } else if (p.includes("viu")) {
-        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+        html += `${input("email", "Phone Number", emailVal)}${input("profile", "Profile Name", profileVal)}`;
     }
 
     form.innerHTML = html;
 }
 
-// Fungsi pengesanan produk yang lebih kuat
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     const urlProduct = params.get("product");
@@ -68,7 +63,6 @@ window.onload = () => {
         const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().trim();
         for (let i = 0; i < product.options.length; i++) {
             const optionText = product.options[i].text.toLowerCase().trim();
-            // Padanan jika mengandungi kata kunci (e.g. "youtube")
             if (optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
                 product.selectedIndex = i;
                 renderForm();
@@ -88,9 +82,7 @@ function generate() {
 
     let text = `${info.emoji}\nORDER NUMBER: ${order}\n📅 Expiry: ${val("exp")}\n👤 Username: ${val("tg")}\n📧 Email: ${val("email")}\n`;
     if (val("pass")) text += `🔑 Password: ${val("pass")}\n`;
-    if (val("link")) text += `🔗 Link: ${val("link")}\n`;
-    if (val("device")) text += `📱 Device: ${val("device")}\n`;
-    if (val("profile")) text += `👥 Profile: ${val("profile")}\n`;
+    if (val("profile")) text += `👥 Profile/Device: ${val("profile")}\n`;
     if (val("pin")) text += `🔢 PIN: ${val("pin")}\n`;
 
     text += "\n" + info.note;
@@ -99,12 +91,12 @@ function generate() {
     result.innerText = text;
     navigator.clipboard.writeText(text);
 
-    fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
+    fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}&product=${encodeURIComponent(p)}`);
 
     const btn = document.getElementById("openTelegram");
     btn.classList.remove("hidden");
     const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
-    const message = `Hi 👋\nKlik link bawah untuk dapatkan akaun:\n${botLink}`;
+    const message = `Hi 👋\nKlik link bawah untuk dapatkan maklumat akaun anda:\n${botLink}`;
     btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
 }
 
