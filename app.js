@@ -28,7 +28,7 @@ function renderForm() {
     if (!p) { form.innerHTML = ""; return; }
 
     const tgVal = params.get("tg") || "";
-    // FIX: Membaca 'exp' dari URL mengikut format link bot
+    // Memastikan 'exp' dibaca dengan betul
     const expVal = params.get("exp") || params.get("expiry") || ""; 
     const emailVal = params.get("email") || "";
     const passVal = params.get("pass") || "";
@@ -61,13 +61,15 @@ window.onload = () => {
     const urlProduct = params.get("product");
     
     if (urlProduct) {
-        const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().trim();
+        // Membersihkan teks dari URL untuk padanan tepat
+        const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().replace(/\+/g, ' ').trim();
+        
         for (let i = 0; i < product.options.length; i++) {
             const optionText = product.options[i].text.toLowerCase().trim();
-            // Logik padanan yang lebih fleksibel untuk mengatasi %20 (space)
-            if (optionText === decodedProduct || optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
+            // Padanan jika teks sama atau mengandungi kata kunci utama
+            if (optionText === decodedProduct || decodedProduct.includes(optionText) || optionText.includes(decodedProduct)) {
                 product.selectedIndex = i;
-                renderForm();
+                renderForm(); // Paksa render form selepas pilih produk
                 break;
             }
         }
@@ -93,13 +95,13 @@ function generate() {
     result.innerText = text;
     navigator.clipboard.writeText(text);
 
-    // Menggunakan parameter 'product' supaya GAS tahu sheet mana perlu diubah statusnya
+    // Hantar data save ke GAS
     fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}&product=${encodeURIComponent(p)}`);
 
     const btn = document.getElementById("openTelegram");
     btn.classList.remove("hidden");
     const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
-    const message = `Hi 👋\nKlik link bawah untuk dapatkan maklumat akaun anda:\n${botLink}`;
+    const message = `Hi 👋\nKlik link bawah untuk maklumat akaun:\n${botLink}`;
     btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
 }
 
