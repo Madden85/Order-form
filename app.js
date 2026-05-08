@@ -10,49 +10,56 @@ function input(id, placeholder, value = "") {
 
 function renderForm() {
     const params = new URLSearchParams(window.location.search);
-    let p = productEl.value.toLowerCase();
+    let p = productEl.value; 
     if (!p) { formEl.innerHTML = ""; return; }
 
-    let html = `${input("tg", "Telegram", params.get("tg"))}${input("exp", "Expiry", params.get("exp"))}`;
+    const tg = params.get("tg") || "";
+    const exp = params.get("exp") || ""; 
+    const email = params.get("email") || "";
+    const pass = params.get("pass") || "";
+    const profile = params.get("profile") || "";
+    const pin = params.get("pin") || "";
 
-    if (p.includes("netflix")) {
-        html += `${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}${input("profile", "Profile", params.get("profile"))}${input("pin", "PIN", params.get("pin"))}`;
-    } else if (p.includes("youtube") && p.includes("own")) {
-        html += `${input("email", "Email Customer", params.get("email"))}`;
-    } else if (p.includes("youtube") && p.includes("seller") || p.includes("iqiyi") || p.includes("viu")) {
-        html += `${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}`;
-    } else if (p.includes("sooka")) {
-        html += `${input("profile", "Device", params.get("profile"))}${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}`;
-    } else if (p.includes("spotify")) {
-        html += `${input("email", "Link Invitation", params.get("email"))}`;
-    } else if (p.includes("disney")) {
-        html += `${input("email", "Phone Number", params.get("email"))}${input("profile", "Profile", params.get("profile"))}`;
+    let html = `${input("tg", "Username Telegram", tg)}${input("exp", "Expired Date", exp)}`;
+
+    if (p === "netflix") {
+        html += `${input("email", "Email", email)}${input("pass", "Password", pass)}${input("profile", "Profile Name", profile)}${input("pin", "PIN", pin)}`;
+    } else if (p === "youtube_own") {
+        html += `${input("email", "Email Customer", email)}`;
+    } else if (p === "youtube_seller" || p === "iqiyi" || p === "viu") {
+        html += `${input("email", "Email", email)}${input("pass", "Password", pass)}`;
+    } else if (p === "sooka") {
+        html += `${input("profile", "Device Type", profile)}${input("email", "Email", email)}${input("pass", "Password", pass)}`;
+    } else if (p === "spotify") {
+        html += `${input("email", "Link Invitation", email)}`;
+    } else if (p === "disney") {
+        html += `${input("email", "Phone Number", email)}${input("profile", "Profile Name", profile)}`;
     }
     formEl.innerHTML = html;
 }
 
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
-    const urlProd = params.get("product");
-    if (urlProd) {
-        const clean = decodeURIComponent(urlProd.replace(/\+/g, ' ')).toLowerCase().trim();
-        for (let i = 0; i < productEl.options.length; i++) {
-            if (productEl.options[i].text.toLowerCase().includes(clean)) {
-                productEl.selectedIndex = i;
-                renderForm();
-                break;
-            }
-        }
+    const rawProd = params.get("product");
+    if (rawProd) {
+        const cleanProd = decodeURIComponent(rawProd.replace(/\+/g, ' ')).toLowerCase().trim();
+        if (cleanProd.includes("netflix")) productEl.value = "netflix";
+        else if (cleanProd.includes("youtube") && cleanProd.includes("own")) productEl.value = "youtube_own";
+        else if (cleanProd.includes("youtube") && cleanProd.includes("seller")) productEl.value = "youtube_seller";
+        else if (cleanProd.includes("sooka")) productEl.value = "sooka";
+        else if (cleanProd.includes("spotify")) productEl.value = "spotify";
+        else if (cleanProd.includes("iqiyi")) productEl.value = "iqiyi";
+        else if (cleanProd.includes("disney")) productEl.value = "disney";
+        else if (cleanProd.includes("viu")) productEl.value = "viu";
+        renderForm();
     }
 };
 
 submitBtn.onclick = () => {
     let order = new URLSearchParams(window.location.search).get("order");
-    fetch(`${API_URL}?mode=save&order=${order}&product=${productEl.value}`);
-    const res = document.getElementById("result");
-    res.innerText = `📦 ORDER BERJAYA\nOrder: ${order}\nExpiry: ${document.getElementById("exp").value}`;
-    res.classList.remove("hidden");
-    const btn = document.getElementById("openTelegram");
-    btn.classList.remove("hidden");
-    btn.href = `https://t.me/share/url?url=https://t.me/NumoVerifyCode_bot?start=${order}`;
+    fetch(`${API_URL}?mode=save&order=${order}`);
+    document.getElementById("result").innerText = `✅ ORDER SAVED: ${order}`;
+    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("openTelegram").classList.remove("hidden");
+    document.getElementById("openTelegram").href = `https://t.me/share/url?url=https://t.me/NumoVerifyCode_bot?start=${order}`;
 };
