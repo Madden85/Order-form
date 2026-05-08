@@ -10,30 +10,23 @@ function input(id, placeholder, value = "") {
 
 function renderForm() {
     const params = new URLSearchParams(window.location.search);
-    let p = productEl.value;
+    let p = productEl.value.toLowerCase();
     if (!p) { formEl.innerHTML = ""; return; }
 
-    const tg = params.get("tg") || "";
-    const exp = params.get("exp") || ""; 
-    const email = params.get("email") || "";
-    const pass = params.get("pass") || "";
-    const profile = params.get("profile") || "";
-    const pin = params.get("pin") || "";
-
-    let html = `${input("tg", "Username Telegram", tg)}${input("exp", "Expired Date", exp)}`;
+    let html = `${input("tg", "Telegram", params.get("tg"))}${input("exp", "Expiry", params.get("exp"))}`;
 
     if (p.includes("netflix")) {
-        html += `${input("email", "Email Address", email)}${input("pass", "Password", pass)}${input("profile", "Nama Profile", profile)}${input("pin", "Pincode", pin)}`;
+        html += `${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}${input("profile", "Profile", params.get("profile"))}${input("pin", "PIN", params.get("pin"))}`;
     } else if (p.includes("youtube") && p.includes("own")) {
-        html += `${input("email", "Email Address (Customer)", email)}`;
+        html += `${input("email", "Email Customer", params.get("email"))}`;
     } else if (p.includes("youtube") && p.includes("seller") || p.includes("iqiyi") || p.includes("viu")) {
-        html += `${input("email", "Email Address", email)}${input("pass", "Password", pass)}`;
+        html += `${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}`;
     } else if (p.includes("sooka")) {
-        html += `${input("profile", "Device Type", profile)}${input("email", "Email Address", email)}${input("pass", "Password", pass)}`;
+        html += `${input("profile", "Device", params.get("profile"))}${input("email", "Email", params.get("email"))}${input("pass", "Pass", params.get("pass"))}`;
     } else if (p.includes("spotify")) {
-        html += `${input("email", "Link Invitation", email)}`;
+        html += `${input("email", "Link Invitation", params.get("email"))}`;
     } else if (p.includes("disney")) {
-        html += `${input("email", "Phone Number", email)}${input("profile", "Profile Name", profile)}`;
+        html += `${input("email", "Phone Number", params.get("email"))}${input("profile", "Profile", params.get("profile"))}`;
     }
     formEl.innerHTML = html;
 }
@@ -51,18 +44,15 @@ window.onload = () => {
             }
         }
     }
-    // Auto-fill values
-    ["tg", "exp", "email", "pass", "profile", "pin"].forEach(id => {
-        if(document.getElementById(id)) document.getElementById(id).value = params.get(id) || "";
-    });
 };
 
 submitBtn.onclick = () => {
-    let p = productEl.value;
-    if (!p) return alert("Pilih produk");
     let order = new URLSearchParams(window.location.search).get("order");
-    fetch(`${API_URL}?mode=save&order=${order}&product=${p}`);
-    // Logic jena teks customer & telegram link (sama seperti kod sebelum ini)
+    fetch(`${API_URL}?mode=save&order=${order}&product=${productEl.value}`);
+    const res = document.getElementById("result");
+    res.innerText = `📦 ORDER BERJAYA\nOrder: ${order}\nExpiry: ${document.getElementById("exp").value}`;
+    res.classList.remove("hidden");
+    const btn = document.getElementById("openTelegram");
+    btn.classList.remove("hidden");
+    btn.href = `https://t.me/share/url?url=https://t.me/NumoVerifyCode_bot?start=${order}`;
 };
-
-function val(id) { let el = document.getElementById(id); return el ? el.value : ""; }
