@@ -15,10 +15,10 @@ function getNote(p) {
     if (p.includes("youtube premium own")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Enjoy youtube & youtube music premium anda 😊` };
     if (p.includes("youtube premium seller")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\np/s-Jika didapati buka lebih dari 1 device, akses akan dinyahaktifkan & tiada refund` };
     if (p.includes("sooka")) return { emoji: "📡 SOOKA PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\np/s-Jika didapati buka lebih dari 1 device, akses akan dinyahaktifkan & tiada refund` };
-    if (p.includes("spotify")) return { emoji: "🎧 SPOTIFY PREMIUM", note: `1) Klik link invitation yang diberikan di atas\n2) Log in account anda (Sila pastikan anda bukan dalam mana2 family plan)\n3) Sahkan alamat anda - Lebuh Nipah 1\n4) Siap — biarkan muzik bermula. Lepas dah boleh join family, sila inform admin semula Hanya 1 DEVICE SAHAJA untuk 1 langganan` };
-    if (p.includes("iqiyi")) return { emoji: "🎥 IQIYI", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\n1️⃣ HANYA 1 screen sahaja pada satu2 masap/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund` };
-    if (p.includes("disney")) return { emoji: "🏰 DISNEY+ HOTSTAR", note: `1) Buka app Disney+ Hotstar\n2) Masukkan no phone\n3) Masukkan code yang admin akan bagi\n4) Siap\nHanya 1 DEVICE SAHAJA untuk 1 langganan\nJangan ganggu profile orang lain` };
-    if (p.includes("viu")) return { emoji: "📱 VIU", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\n1️⃣ HANYA 1 screen sahaja pada satu2 masa\np/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund` };
+    if (p.includes("spotify")) return { emoji: "🎧 SPOTIFY PREMIUM", note: `1) Klik link invitation yang diberikan di atas\n2) Log in account anda\n3) Sahkan alamat anda\n4) Sila inform admin semula selepas siap` };
+    if (p.includes("iqiyi")) return { emoji: "🎥 IQIYI", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\n1️⃣ HANYA 1 screen sahaja pada satu2 masa` };
+    if (p.includes("disney")) return { emoji: "🏰 DISNEY+ HOTSTAR", note: `1) Buka app Disney+ Hotstar\n2) Masukkan no phone\n3) Masukkan code dari admin\n4) Jangan ganggu profile orang lain` };
+    if (p.includes("viu")) return { emoji: "📱 VIU", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja` };
     return { emoji: "📦 ACCOUNT", note: "" };
 }
 
@@ -36,6 +36,7 @@ function renderForm() {
 
     let html = `${input("tg", "Username Telegram", tgVal)}${input("exp", "Expired Date", expVal)}`;
 
+    // LOGIK DETAIL MENGIKUT PRODUK
     if (p.includes("netflix")) {
         html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}${input("pin", "Pincode", pinVal)}`;
     } else if (p.includes("youtube premium own")) {
@@ -43,12 +44,15 @@ function renderForm() {
     } else if (p.includes("youtube premium seller")) {
         html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("sooka")) {
-        html += `${input("profile", "Device Type", profileVal)}${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
+        // Sooka: Detail slot mengikut Device Type (Profile slot dlm Sheets)
+        html += `${input("profile", "Device Type (TV/Phone/Tablet)", profileVal)}${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("spotify")) {
+        // Spotify: Detail slot mengikut Link Invitation (Email slot dlm Sheets)
         html += `${input("email", "Link Invitation", emailVal)}`;
     } else if (p.includes("iqiyi") || p.includes("viu")) {
         html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
     } else if (p.includes("disney")) {
+        // Disney: Detail slot mengikut Phone Number (Email slot dlm Sheets)
         html += `${input("email", "Phone Number", emailVal)}${input("profile", "Profile Name", profileVal)}`;
     }
 
@@ -80,7 +84,7 @@ function generate() {
     let order = new URLSearchParams(window.location.search).get("order");
     const info = getNote(p);
 
-    let text = `${info.emoji}\nORDER NUMBER: ${order}\n📅 Expiry: ${val("exp")}\n👤 Username: ${val("tg")}\n📧 Email: ${val("email")}\n`;
+    let text = `${info.emoji}\nORDER NUMBER: ${order}\n📅 Expiry: ${val("exp")}\n👤 Username: ${val("tg")}\n📧 Detail: ${val("email")}\n`;
     if (val("pass")) text += `🔑 Password: ${val("pass")}\n`;
     if (val("profile")) text += `👥 Profile/Device: ${val("profile")}\n`;
     if (val("pin")) text += `🔢 PIN: ${val("pin")}\n`;
@@ -91,6 +95,7 @@ function generate() {
     result.innerText = text;
     navigator.clipboard.writeText(text);
 
+    // Pastikan parameter product dihantar ke GAS semasa mode=save
     fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}&product=${encodeURIComponent(p)}`);
 
     const btn = document.getElementById("openTelegram");
