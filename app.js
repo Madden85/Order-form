@@ -11,14 +11,14 @@ function input(id, placeholder, value = "") {
 
 function getNote(p) {
     p = p.toLowerCase();
-    if (p.includes("netflix")) return { emoji: "🎬 NETFLIX PREMIUM", note: `⚠️ JANGAN UBAH apa2 setting\n⚠️ JANGAN KACAU profile lain\n1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa\np/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHAKTIF & TIADA REFUND` };
-    if (p.includes("youtube premium own")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Enjoy youtube & youtube music premium anda 😊` };
-    if (p.includes("youtube premium seller")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja` };
-    if (p.includes("sooka")) return { emoji: "📡 SOOKA PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja` };
-    if (p.includes("spotify")) return { emoji: "🎧 SPOTIFY PREMIUM", note: `1) Klik link invitation\n2) Log in account anda\n3) Sahkan alamat\n4) Inform admin semula` };
-    if (p.includes("iqiyi")) return { emoji: "🎥 IQIYI", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja` };
-    if (p.includes("disney")) return { emoji: "🏰 DISNEY+ HOTSTAR", note: `1) Buka app Disney+ Hotstar\n2) Masukkan no phone\n3) Masukkan code dari admin` };
-    if (p.includes("viu")) return { emoji: "📱 VIU", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja` };
+    if (p.includes("netflix")) return { emoji: "🎬 NETFLIX PREMIUM", note: "⚠️ JANGAN UBAH apa2 setting\n⚠️ JANGAN KACAU profile lain\n1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa" };
+    if (p.includes("youtube premium own")) return { emoji: "📺 YOUTUBE PREMIUM", note: "⚠️ Enjoy youtube & youtube music premium anda 😊" };
+    if (p.includes("youtube premium seller")) return { emoji: "📺 YOUTUBE PREMIUM", note: "⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja" };
+    if (p.includes("sooka")) return { emoji: "📡 SOOKA PREMIUM", note: "⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja" };
+    if (p.includes("spotify")) return { emoji: "🎧 SPOTIFY PREMIUM", note: "1) Klik link invitation\n2) Log in account anda\n3) Sahkan alamat\n4) Inform admin semula" };
+    if (p.includes("iqiyi")) return { emoji: "🎥 IQIYI", note: "⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja" };
+    if (p.includes("disney")) return { emoji: "🏰 DISNEY+ HOTSTAR", note: "1) Buka app Disney+ Hotstar\n2) Masukkan no phone\n3) Masukkan code dari admin" };
+    if (p.includes("viu")) return { emoji: "📱 VIU", note: "⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja" };
     return { emoji: "📦 ACCOUNT", note: "" };
 }
 
@@ -28,7 +28,6 @@ function renderForm() {
     if (!p) { form.innerHTML = ""; return; }
 
     const tgVal = params.get("tg") || "";
-    // Memastikan 'exp' dibaca dengan betul
     const expVal = params.get("exp") || params.get("expiry") || ""; 
     const emailVal = params.get("email") || "";
     const passVal = params.get("pass") || "";
@@ -56,25 +55,28 @@ function renderForm() {
     form.innerHTML = html;
 }
 
-window.onload = () => {
+// LOGIK PENYELESAIAN AUTOFILL MUKTAMAD
+function initAutofill() {
     const params = new URLSearchParams(window.location.search);
     const urlProduct = params.get("product");
     
     if (urlProduct) {
-        // Membersihkan teks dari URL untuk padanan tepat
         const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().replace(/\+/g, ' ').trim();
         
         for (let i = 0; i < product.options.length; i++) {
             const optionText = product.options[i].text.toLowerCase().trim();
-            // Padanan jika teks sama atau mengandungi kata kunci utama
+            // Padanan fleksibel untuk mengatasi masalah space atau casing
             if (optionText === decodedProduct || decodedProduct.includes(optionText) || optionText.includes(decodedProduct)) {
                 product.selectedIndex = i;
-                renderForm(); // Paksa render form selepas pilih produk
+                renderForm();
                 break;
             }
         }
     }
-};
+}
+
+// Gunakan DOMContentLoaded untuk pastikan elemen dah sedia
+document.addEventListener("DOMContentLoaded", initAutofill);
 
 submitBtn.onclick = generate;
 
@@ -95,13 +97,13 @@ function generate() {
     result.innerText = text;
     navigator.clipboard.writeText(text);
 
-    // Hantar data save ke GAS
+    // Hantar mode=save ke GAS ikut produk yang dipilih
     fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}&product=${encodeURIComponent(p)}`);
 
     const btn = document.getElementById("openTelegram");
     btn.classList.remove("hidden");
     const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
-    const message = `Hi 👋\nKlik link bawah untuk maklumat akaun:\n${botLink}`;
+    const message = `Hi 👋\nKlik link bawah untuk dapatkan maklumat akaun anda:\n${botLink}`;
     btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
 }
 
