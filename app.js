@@ -1,65 +1,113 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbygES0rnSh7YKTZAmDrrbq0pzJmBQ7M5XT3VNBlFsW5zskT2Pj7FnTm9F_4NPESsm_S/exec";
-const productEl = document.getElementById("product");
-const formEl = document.getElementById("form");
+const product = document.getElementById("product");
+const form = document.getElementById("form");
 const submitBtn = document.getElementById("submitBtn");
+const result = document.getElementById("result");
 
 function input(id, placeholder, value = "") {
-    const safeValue = (value === "null" || value === null || value === "undefined") ? "" : value;
+    // Memastikan value tidak "undefined" atau "null"
+    const safeValue = (value === "null" || value === null) ? "" : value;
     return `<input id="${id}" type="text" placeholder="${placeholder}" value="${safeValue}">`;
+}
+
+function getNote(p) {
+    p = p.toLowerCase();
+    if (p.includes("netflix")) return { emoji: "🎬 NETFLIX PREMIUM", note: `⚠️ JANGAN UBAH apa2 setting\n⚠️ JANGAN KACAU profile lain\n1️⃣ HANYA 1 SCREEN SAHAJA pada satu2 masa\np/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa,PROFILE AKAN DINYAHAKTIF & TIADA REFUND` };
+    if (p.includes("youtube premium own")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Enjoy youtube & youtube music premium anda 😊` };
+    if (p.includes("youtube premium seller")) return { emoji: "📺 YOUTUBE PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\np/s-Jika didapati buka lebih dari 1 device, akses akan dinyahaktifkan & tiada refund` };
+    if (p.includes("sooka")) return { emoji: "📡 SOOKA PREMIUM", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\np/s-Jika didapati buka lebih dari 1 device, akses akan dinyahaktifkan & tiada refund` };
+    if (p.includes("spotify")) return { emoji: "🎧 SPOTIFY PREMIUM", note: `1) Klik link invitation yang diberikan di atas\n2) Log in account anda (Sila pastikan anda bukan dalam mana2 family plan)\n3) Sahkan alamat anda - Lebuh Nipah 1\n4) Siap — biarkan muzik bermula. Lepas dah boleh join family, sila inform admin semula Hanya 1 DEVICE SAHAJA untuk 1 langganan` };
+    if (p.includes("iqiyi")) return { emoji: "🎥 IQIYI", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\n1️⃣ HANYA 1 screen sahaja pada satu2 masap/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund` };
+    if (p.includes("disney")) return { emoji: "🏰 DISNEY+ HOTSTAR", note: `1) Buka app Disney+ Hotstar\n2) Masukkan no phone\n3) Masukkan code yang admin akan bagi\n4) Siap\nHanya 1 DEVICE SAHAJA untuk 1 langganan\nJangan ganggu profile orang lain` };
+    if (p.includes("viu")) return { emoji: "📱 VIU", note: `⚠️ Jangan ubah apa2 setting\n❌Boleh log in 1 device sahaja\n1️⃣ HANYA 1 screen sahaja pada satu2 masa\np/s-Jika didapati buka lebih dari 1 screen dalam satu2 masa, profile akan dinyahaktifkan & tiada refund` };
+    return { emoji: "📦 ACCOUNT", note: "" };
 }
 
 function renderForm() {
     const params = new URLSearchParams(window.location.search);
-    let p = productEl.value; 
-    if (!p) { formEl.innerHTML = ""; return; }
+    let p = product.value.toLowerCase();
+    if (!p) { form.innerHTML = ""; return; }
 
-    const tg = params.get("tg") || "";
-    const exp = params.get("exp") || ""; 
-    const email = params.get("email") || "";
-    const pass = params.get("pass") || "";
-    const profile = params.get("profile") || "";
-    const pin = params.get("pin") || "";
+    // Ambil data terus dari URL
+    const tgVal = params.get("tg") || "";
+    const expVal = params.get("exp") || "";
+    const emailVal = params.get("email") || "";
+    const passVal = params.get("pass") || "";
+    const profileVal = params.get("profile") || "";
+    const pinVal = params.get("pin") || "";
+    const phoneVal = params.get("phone") || "";
 
-    let html = `${input("tg", "Username Telegram", tg)}${input("exp", "Expired Date", exp)}`;
+    let html = `${input("tg", "Username Telegram", tgVal)}${input("exp", "Expired Date", expVal)}`;
 
-    if (p === "netflix") {
-        html += `${input("email", "Email", email)}${input("pass", "Password", pass)}${input("profile", "Profile Name", profile)}${input("pin", "PIN", pin)}`;
-    } else if (p === "youtube_own") {
-        html += `${input("email", "Email Customer", email)}`;
-    } else if (p === "youtube_seller" || p === "iqiyi" || p === "viu") {
-        html += `${input("email", "Email", email)}${input("pass", "Password", pass)}`;
-    } else if (p === "sooka") {
-        html += `${input("profile", "Device Type", profile)}${input("email", "Email", email)}${input("pass", "Password", pass)}`;
-    } else if (p === "spotify") {
-        html += `${input("email", "Link Invitation", email)}`;
-    } else if (p === "disney") {
-        html += `${input("email", "Phone Number", email)}${input("profile", "Profile Name", profile)}`;
+    if (p.includes("netflix")) {
+        html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}${input("pin", "Pincode", pinVal)}`;
+    } else if (p.includes("youtube premium own")) {
+        html += `${input("email", "Email Address", emailVal)}`;
+    } else if (p.includes("youtube premium seller")) {
+        html += `${input("email", "Email Address", emailVal)}${input("pass", "Password", passVal)}`;
+    } else if (p.includes("sooka")) {
+        html += `${input("device", "Device", params.get("device"))}${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+    } else if (p.includes("spotify")) {
+        html += `${input("email", "Email", emailVal)}${input("link", "Link", params.get("link"))}`;
+    } else if (p.includes("iqiyi")) {
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+    } else if (p.includes("disney")) {
+        html += `${input("phone", "No Phone", phoneVal)}${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama profile", profileVal)}`;
+    } else if (p.includes("viu")) {
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
     }
-    formEl.innerHTML = html;
+
+    form.innerHTML = html;
 }
 
+// Fungsi pengesanan produk yang lebih kuat
 window.onload = () => {
     const params = new URLSearchParams(window.location.search);
-    const rawProd = params.get("product");
-    if (rawProd) {
-        const cleanProd = decodeURIComponent(rawProd.replace(/\+/g, ' ')).toLowerCase().trim();
-        if (cleanProd.includes("netflix")) productEl.value = "netflix";
-        else if (cleanProd.includes("youtube") && cleanProd.includes("own")) productEl.value = "youtube_own";
-        else if (cleanProd.includes("youtube") && cleanProd.includes("seller")) productEl.value = "youtube_seller";
-        else if (cleanProd.includes("sooka")) productEl.value = "sooka";
-        else if (cleanProd.includes("spotify")) productEl.value = "spotify";
-        else if (cleanProd.includes("iqiyi")) productEl.value = "iqiyi";
-        else if (cleanProd.includes("disney")) productEl.value = "disney";
-        else if (cleanProd.includes("viu")) productEl.value = "viu";
-        renderForm();
+    const urlProduct = params.get("product");
+    
+    if (urlProduct) {
+        const decodedProduct = decodeURIComponent(urlProduct).toLowerCase().trim();
+        for (let i = 0; i < product.options.length; i++) {
+            const optionText = product.options[i].text.toLowerCase().trim();
+            // Padanan jika mengandungi kata kunci (e.g. "youtube")
+            if (optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
+                product.selectedIndex = i;
+                renderForm();
+                break;
+            }
+        }
     }
 };
 
-submitBtn.onclick = () => {
+submitBtn.onclick = generate;
+
+function generate() {
+    let p = product.value;
+    if (!p) return alert("Pilih produk");
     let order = new URLSearchParams(window.location.search).get("order");
-    fetch(`${API_URL}?mode=save&order=${order}`);
-    document.getElementById("result").innerText = `✅ ORDER SAVED: ${order}`;
-    document.getElementById("result").classList.remove("hidden");
-    document.getElementById("openTelegram").classList.remove("hidden");
-    document.getElementById("openTelegram").href = `https://t.me/share/url?url=https://t.me/NumoVerifyCode_bot?start=${order}`;
-};
+    const info = getNote(p);
+
+    let text = `${info.emoji}\nORDER NUMBER: ${order}\n📅 Expiry: ${val("exp")}\n👤 Username: ${val("tg")}\n📧 Email: ${val("email")}\n`;
+    if (val("pass")) text += `🔑 Password: ${val("pass")}\n`;
+    if (val("link")) text += `🔗 Link: ${val("link")}\n`;
+    if (val("device")) text += `📱 Device: ${val("device")}\n`;
+    if (val("phone")) text += `📞 No Phone: ${val("phone")}\n`;
+    if (val("profile")) text += `👥 Profile: ${val("profile")}\n`;
+    if (val("pin")) text += `🔢 PIN: ${val("pin")}\n`;
+
+    text += "\n" + info.note;
+
+    result.classList.remove("hidden");
+    result.innerText = text;
+    navigator.clipboard.writeText(text);
+
+    fetch(`${API_URL}?mode=save&order=${encodeURIComponent(order)}`);
+
+    const btn = document.getElementById("openTelegram");
+    btn.classList.remove("hidden");
+    const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
+    const message = `Hi 👋\nKlik link bawah untuk dapatkan akaun:\n${botLink}`;
+    btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
+}
+
+function val(id) { let el = document.getElementById(id); return el ? el.value : ""; }
