@@ -113,8 +113,8 @@ function generate() {
 
     const botLink = `https://t.me/NumoVerifyCode_bot?start=${order}`;
 
-    const message = `Hi 👋
-Tekan link dibawah untuk dapatkan detail akaun`;
+    const message = `Hi
+Tekan link di atas 👆 untuk dapatkan detail akaun`;
 
     // Ikut cara asal yang dah jalan: guna url + text
     btn.href = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(message)}`;
