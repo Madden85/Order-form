@@ -21,6 +21,8 @@ function getTitle(p) {
     if (p.includes("iqiyi")) return "🎥 IQIYI";
     if (p.includes("disney")) return "🏰 DISNEY+ HOTSTAR";
     if (p.includes("viu")) return "📱 VIU";
+    if (p.includes("prime video") || p.includes("primevideo")) return "🎬 PRIME VIDEO";
+    if (p.includes("hbo max") || p.includes("hbomax")) return "🎬 HBO MAX";
 
     return "📦 ACCOUNT";
 }
@@ -57,6 +59,10 @@ function renderForm() {
         html += `${input("phone", "No Phone", phoneVal)}${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama profile", profileVal)}`;
     } else if (p.includes("viu")) {
         html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}`;
+    } else if (p.includes("prime video") || p.includes("primevideo")) {
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}`;
+    } else if (p.includes("hbo max") || p.includes("hbomax")) {
+        html += `${input("email", "Email", emailVal)}${input("pass", "Password", passVal)}${input("profile", "Nama Profile", profileVal)}${input("pin", "Pincode", pinVal)}`;
     }
 
     form.innerHTML = html;
@@ -72,7 +78,14 @@ window.onload = () => {
         for (let i = 0; i < product.options.length; i++) {
             const optionText = product.options[i].text.toLowerCase().trim();
             // Padanan jika mengandungi kata kunci (e.g. "youtube")
-            if (optionText.includes(decodedProduct) || decodedProduct.includes(optionText)) {
+            const normalizedOption = optionText.replace(/[^a-z0-9]/g, "");
+            const normalizedUrl = decodedProduct.replace(/[^a-z0-9]/g, "");
+            if (
+                optionText.includes(decodedProduct) ||
+                decodedProduct.includes(optionText) ||
+                normalizedOption.includes(normalizedUrl) ||
+                normalizedUrl.includes(normalizedOption)
+            ) {
                 product.selectedIndex = i;
                 renderForm();
                 break;
